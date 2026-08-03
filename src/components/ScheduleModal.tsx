@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScheduleOption } from '../types/enums';
 import { AlarmManager } from '../background/alarm-manager';
-import { Clock, Calendar, X } from 'lucide-react';
+import { Clock, X } from 'lucide-react';
 
 interface ScheduleModalProps {
   itemId: string;
@@ -44,8 +44,8 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        backdropFilter: 'blur(4px)',
+        backgroundColor: 'rgba(16, 22, 38, 0.8)',
+        backdropFilter: 'blur(8px)',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
@@ -55,60 +55,61 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
       onClick={onClose}
     >
       <div
+        className="painted-card animate-fade-in"
         style={{
           width: '100%',
           maxWidth: '360px',
-          backgroundColor: 'var(--md-sys-color-surface)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--md-sys-color-outline)',
-          boxShadow: 'var(--shadow-md)',
-          overflow: 'hidden'
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 0
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <div
           style={{
             padding: '16px',
-            borderBottom: '1px solid var(--md-sys-color-outline-variant)',
+            borderBottom: '2px solid var(--color-sky-swirl)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            background: 'var(--color-surface)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Clock size={18} color="var(--md-sys-color-primary)" />
-            <h3 style={{ fontSize: '15px', fontWeight: 600 }}>Schedule Reminder</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Clock size={20} color="var(--color-moon-yellow)" />
+            <h3 className="display-font" style={{ fontSize: '18px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>Schedule Reminder</h3>
           </div>
-          <button onClick={onClose} style={{ color: 'var(--md-sys-color-on-surface-variant)' }}>
-            <X size={18} />
+          <button onClick={onClose} className="painted-btn-icon painted-interactive" style={{ width: '28px', height: '28px' }}>
+            <X size={14} />
           </button>
         </div>
 
-        <div style={{ padding: '12px 16px', fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)' }}>
-          Item: <strong style={{ color: 'var(--md-sys-color-on-surface)' }}>{itemTitle}</strong>
+        <div style={{ padding: '14px 16px', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', background: 'var(--color-surface)' }}>
+          Item: <strong style={{ color: 'var(--color-moon-yellow)' }}>{itemTitle}</strong>
         </div>
 
-        <div style={{ padding: '0 16px 16px 16px', display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '300px', overflowY: 'auto' }}>
+        <div style={{ padding: '0 16px 16px 16px', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '300px', overflowY: 'auto', background: 'var(--color-surface)' }}>
           {options.map((opt) => (
             <label
               key={opt.key}
+              className="painted-interactive"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '10px 12px',
+                padding: '12px 16px',
                 borderRadius: 'var(--radius-md)',
-                border: '1px solid',
-                borderColor: selectedOption === opt.key ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline-variant)',
-                backgroundColor: selectedOption === opt.key ? 'var(--md-sys-color-primary-container)' : 'transparent',
+                backgroundColor: selectedOption === opt.key ? 'rgba(252, 217, 85, 0.1)' : 'var(--color-surface-elevated)',
+                border: selectedOption === opt.key ? '2px solid var(--color-moon-yellow)' : '1px solid var(--color-sky-swirl)',
+                boxShadow: selectedOption === opt.key ? 'var(--shadow-glow)' : 'var(--shadow-impasto-base)',
                 cursor: 'pointer'
               }}
             >
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '13px', fontWeight: 500, color: selectedOption === opt.key ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface)' }}>
+                <span className="display-font" style={{ fontSize: '15px', fontWeight: 700, color: selectedOption === opt.key ? 'var(--color-moon-yellow)' : 'var(--md-sys-color-on-surface)' }}>
                   {opt.label}
                 </span>
-                <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+                <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '2px' }}>
                   {opt.sub}
                 </span>
               </div>
@@ -117,26 +118,19 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
                 name="scheduleOption"
                 checked={selectedOption === opt.key}
                 onChange={() => setSelectedOption(opt.key)}
-                style={{ accentColor: 'var(--md-sys-color-primary)' }}
+                style={{ accentColor: 'var(--color-moon-yellow)', width: '16px', height: '16px' }}
               />
             </label>
           ))}
 
           {selectedOption === 'custom' && (
-            <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <label style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)' }}>Select Date & Time</label>
+            <div className="animate-fade-in" style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label className="display-font" style={{ fontSize: '13px', color: 'var(--color-moon-yellow)', fontWeight: 700 }}>Select Date & Time</label>
               <input
                 type="datetime-local"
                 value={customDateTime}
                 onChange={(e) => setCustomDateTime(e.target.value)}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--md-sys-color-outline)',
-                  backgroundColor: 'var(--md-sys-color-surface-variant)',
-                  color: 'var(--md-sys-color-on-surface)',
-                  fontSize: '13px'
-                }}
+                className="painted-input"
               />
             </div>
           )}
@@ -144,34 +138,23 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
 
         <div
           style={{
-            padding: '12px 16px',
-            borderTop: '1px solid var(--md-sys-color-outline-variant)',
+            padding: '16px',
+            borderTop: '2px solid var(--color-sky-swirl)',
             display: 'flex',
             justifyContent: 'flex-end',
-            gap: '8px'
+            gap: '12px',
+            background: 'var(--color-surface)'
           }}
         >
           <button
             onClick={onClose}
-            style={{
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-md)',
-              color: 'var(--md-sys-color-on-surface-variant)',
-              fontSize: '13px'
-            }}
+            className="painted-btn painted-btn-secondary painted-interactive"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            style={{
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: 'var(--md-sys-color-primary)',
-              color: 'var(--md-sys-color-on-primary)',
-              fontWeight: 600,
-              fontSize: '13px'
-            }}
+            className="painted-btn painted-btn-primary painted-interactive"
           >
             Set Reminder
           </button>

@@ -9,19 +9,28 @@ interface BadgeGridProps {
 export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
   const renderIcon = (iconName: string, isUnlocked: boolean) => {
     const props = {
-      size: 20,
-      color: isUnlocked ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-on-surface-variant)'
+      size: 26,
+      color: isUnlocked ? '#2a2212' : 'var(--md-sys-color-on-surface-variant)'
     };
 
+    let iconNode;
     switch (iconName) {
-      case 'BookOpen': return <BookOpen {...props} />;
-      case 'GraduationCap': return <GraduationCap {...props} />;
-      case 'Headphones': return <Headphones {...props} />;
-      case 'Code': return <Code {...props} />;
-      case 'Flame': return <Flame {...props} />;
-      case 'Zap': return <Zap {...props} />;
-      default: return <Award {...props} />;
+      case 'BookOpen': iconNode = <BookOpen {...props} />; break;
+      case 'GraduationCap': iconNode = <GraduationCap {...props} />; break;
+      case 'Headphones': iconNode = <Headphones {...props} />; break;
+      case 'Code': iconNode = <Code {...props} />; break;
+      case 'Flame': iconNode = <Flame {...props} />; break;
+      case 'Zap': iconNode = <Zap {...props} />; break;
+      default: iconNode = <Award {...props} />; break;
     }
+
+    return (
+      <div style={{
+        filter: isUnlocked ? 'drop-shadow(1px 2px 2px rgba(0,0,0,0.4))' : 'none'
+      }}>
+        {iconNode}
+      </div>
+    );
   };
 
   return (
@@ -29,7 +38,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '8px'
+        gap: '14px'
       }}
     >
       {ALL_BADGES.map((badge) => {
@@ -38,25 +47,24 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
         return (
           <div
             key={badge.id}
+            className={`painted-card ${isUnlocked ? 'painted-interactive' : ''}`}
             style={{
-              padding: '10px 8px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: isUnlocked ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface-variant)',
-              border: '1px solid',
-              borderColor: isUnlocked ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline-variant)',
-              opacity: isUnlocked ? 1 : 0.45,
+              padding: '16px 8px',
+              backgroundColor: isUnlocked ? 'var(--color-moon-yellow)' : 'var(--color-surface)',
+              border: isUnlocked ? '2px solid #a54619' : '2px solid var(--color-sky-swirl)',
+              opacity: isUnlocked ? 1 : 0.6,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               textAlign: 'center',
-              gap: '6px'
+              gap: '10px'
             }}
           >
             {renderIcon(badge.icon, isUnlocked)}
-            <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}>
+            <span className="display-font" style={{ fontSize: '13px', fontWeight: 800, color: isUnlocked ? '#2a2212' : 'var(--md-sys-color-on-surface)' }}>
               {badge.name}
             </span>
-            <span style={{ fontSize: '9px', color: 'var(--md-sys-color-on-surface-variant)', lineHeight: 1.2 }}>
+            <span style={{ fontSize: '10px', color: isUnlocked ? 'rgba(42,34,18,0.8)' : 'var(--md-sys-color-on-surface-variant)', lineHeight: 1.3 }}>
               {badge.description}
             </span>
           </div>

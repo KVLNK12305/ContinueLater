@@ -29,9 +29,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     <div
       style={{
         display: 'flex',
-        gap: '6px',
+        gap: '8px',
         overflowX: 'auto',
-        padding: '4px 0',
+        padding: '6px 4px',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none'
       }}
@@ -44,30 +44,21 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           <button
             key={cat.key}
             onClick={() => onSelectCategory(cat.key)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '5px 10px',
-              borderRadius: 'var(--radius-full)',
-              fontSize: '11px',
-              fontWeight: isActive ? 600 : 400,
-              whiteSpace: 'nowrap',
-              backgroundColor: isActive ? 'var(--md-sys-color-primary-container)' : 'var(--md-sys-color-surface-variant)',
-              color: isActive ? 'var(--md-sys-color-on-primary-container)' : 'var(--md-sys-color-on-surface-variant)',
-              border: isActive ? '1px solid var(--md-sys-color-primary)' : '1px solid var(--md-sys-color-outline-variant)'
-            }}
+            className={`painted-chip painted-interactive ${isActive ? 'painted-chip-active' : ''}`}
+            style={{ padding: '6px 14px' }}
           >
             {cat.icon}
             <span>{cat.label}</span>
             {count > 0 && (
               <span
                 style={{
-                  fontSize: '9px',
-                  padding: '1px 5px',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  padding: '1px 6px',
                   borderRadius: 'var(--radius-full)',
-                  backgroundColor: isActive ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-outline)',
-                  color: isActive ? '#fff' : 'var(--md-sys-color-on-surface)'
+                  background: isActive ? 'rgba(0,0,0,0.2)' : 'var(--color-surface)',
+                  color: isActive ? '#2a2212' : 'var(--md-sys-color-on-surface)',
+                  boxShadow: isActive ? 'none' : 'inset 1px 1px 2px rgba(0,0,0,0.5)'
                 }}
               >
                 {count}

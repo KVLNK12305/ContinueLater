@@ -22,20 +22,10 @@ export const CalendarButton: React.FC<CalendarButtonProps> = ({ item }) => {
     <button
       onClick={handleClick}
       title="Add to Google Calendar"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        fontSize: '11px',
-        padding: '4px 8px',
-        borderRadius: 'var(--radius-sm)',
-        backgroundColor: 'var(--md-sys-color-surface-variant)',
-        color: 'var(--md-sys-color-on-surface-variant)',
-        border: '1px solid var(--md-sys-color-outline-variant)'
-      }}
+      className="painted-btn painted-btn-secondary painted-interactive"
+      style={{ fontSize: '11px', padding: '4px 10px' }}
     >
-      <Calendar size={12} />
-      <span>Calendar</span>
+      <Calendar size={12} /> Calendar
     </button>
   );
 };

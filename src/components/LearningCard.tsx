@@ -5,7 +5,7 @@ import { CalendarButton } from './CalendarButton';
 import { EmailButton } from './EmailButton';
 import { ScheduleModal } from './ScheduleModal';
 import { formatRemainingTime } from '../utils/time';
-import { Play, CheckCircle, Trash2, Clock, ExternalLink, MoreVertical, BookOpen } from 'lucide-react';
+import { Play, CheckCircle, Trash2, Clock, BookOpen } from 'lucide-react';
 
 interface LearningCardProps {
   item: LearningObject;
@@ -23,42 +23,14 @@ export const LearningCard: React.FC<LearningCardProps> = ({
   onRefresh
 }) => {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
 
   const remainingStr = formatRemainingTime(item.estimatedRemainingMinutes);
 
-  const getSourceBadgeColor = (source: string) => {
-    switch (source) {
-      case 'youtube': return '#ef4444';
-      case 'github': return '#a855f7';
-      case 'medium': return '#10b981';
-      case 'substack': return '#f97316';
-      case 'wikipedia': return '#3b82f6';
-      case 'pdf': return '#e11d48';
-      default: return '#6366f1';
-    }
-  };
-
   return (
     <>
-      <div
-        className="animate-fade-in"
-        style={{
-          position: 'relative',
-          padding: '12px',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--glass-bg)',
-          border: '1px solid var(--glass-border)',
-          backdropFilter: 'var(--glass-backdrop)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          transition: 'all 0.2s ease',
-          boxShadow: 'var(--shadow-sm)'
-        }}
-      >
+      <div className="animate-fade-in painted-card painted-card-interactive" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-          {/* Thumbnail / Source Icon */}
+          {/* Thumbnail / Source Icon with Painted frame */}
           <div
             style={{
               position: 'relative',
@@ -66,7 +38,9 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               height: '48px',
               borderRadius: 'var(--radius-sm)',
               overflow: 'hidden',
-              backgroundColor: 'var(--md-sys-color-surface-variant)',
+              backgroundColor: 'var(--color-canvas-bg)',
+              boxShadow: 'inset 2px 2px 5px rgba(0,0,0,0.8)',
+              border: '1px solid var(--color-sky-swirl)',
               flexShrink: 0,
               display: 'flex',
               alignItems: 'center',
@@ -77,7 +51,7 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               <img
                 src={item.thumbnail}
                 alt={item.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'contrast(1.1) saturate(1.2)' }}
                 onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
               />
             ) : item.favicon ? (
@@ -88,17 +62,19 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
             {/* Source Label Badge */}
             <span
+              className="display-font"
               style={{
                 position: 'absolute',
-                bottom: 2,
-                left: 2,
-                fontSize: '8px',
-                fontWeight: 700,
-                padding: '1px 4px',
-                borderRadius: '3px',
-                backgroundColor: getSourceBadgeColor(item.source),
-                color: '#fff',
-                textTransform: 'uppercase'
+                bottom: 3,
+                left: 3,
+                fontSize: '9px',
+                fontWeight: 800,
+                padding: '2px 5px',
+                borderRadius: 'var(--radius-sm)',
+                background: 'var(--gradient-accent)',
+                color: '#2a2212',
+                textTransform: 'uppercase',
+                boxShadow: 'var(--shadow-impasto-base)'
               }}
             >
               {item.source}
@@ -108,13 +84,15 @@ export const LearningCard: React.FC<LearningCardProps> = ({
           {/* Title & Subtitle */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <h4
+              className="display-font"
               style={{
-                fontSize: '13px',
-                fontWeight: 600,
+                fontSize: '14px',
+                fontWeight: 700,
                 color: 'var(--md-sys-color-on-surface)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
               }}
               title={item.title}
             >
@@ -133,8 +111,8 @@ export const LearningCard: React.FC<LearningCardProps> = ({
               {item.subtitle || item.url}
             </p>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-              <span style={{ fontSize: '10px', color: 'var(--md-sys-color-primary)', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+              <span className="painted-text-accent" style={{ fontSize: '11px', fontWeight: 700 }}>
                 {remainingStr}
               </span>
               {item.scheduledTime && (
@@ -153,69 +131,42 @@ export const LearningCard: React.FC<LearningCardProps> = ({
 
         {/* Action Row */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '4px' }}>
-          <div style={{ display: 'flex', gap: '6px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <CalendarButton item={item} />
             <EmailButton item={item} />
             <button
               onClick={() => setShowScheduleModal(true)}
               title="Schedule Reminder"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '11px',
-                padding: '4px 8px',
-                borderRadius: 'var(--radius-sm)',
-                backgroundColor: 'var(--md-sys-color-surface-variant)',
-                color: 'var(--md-sys-color-on-surface-variant)',
-                border: '1px solid var(--md-sys-color-outline-variant)'
-              }}
+              className="painted-btn painted-btn-secondary painted-interactive"
+              style={{ fontSize: '11px', padding: '4px 10px' }}
             >
-              <Clock size={12} />
-              <span>Remind</span>
+              <Clock size={12} /> Remind
             </button>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <button
               onClick={() => onComplete(item)}
               title="Mark as completed"
-              style={{
-                padding: '4px',
-                color: 'var(--md-sys-color-on-surface-variant)',
-                borderRadius: 'var(--radius-sm)'
-              }}
+              className="painted-btn-icon painted-interactive"
+              style={{ color: 'var(--md-sys-color-success)' }}
             >
-              <CheckCircle size={16} />
+              <CheckCircle size={15} />
             </button>
             <button
               onClick={() => onDelete(item.id)}
               title="Delete item"
-              style={{
-                padding: '4px',
-                color: 'var(--md-sys-color-on-surface-variant)',
-                borderRadius: 'var(--radius-sm)'
-              }}
+              className="painted-btn-icon painted-interactive"
+              style={{ color: 'var(--md-sys-color-error)' }}
             >
-              <Trash2 size={16} />
+              <Trash2 size={15} />
             </button>
             <button
               onClick={() => onResume(item)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                fontSize: '12px',
-                fontWeight: 600,
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: 'var(--md-sys-color-primary)',
-                color: 'var(--md-sys-color-on-primary)',
-                boxShadow: 'var(--shadow-glow)'
-              }}
+              className="painted-btn painted-btn-primary painted-interactive"
+              style={{ fontSize: '12px', padding: '6px 14px' }}
             >
-              <Play size={12} fill="currentColor" />
-              <span>Resume</span>
+              <Play size={12} fill="currentColor" /> Resume
             </button>
           </div>
         </div>

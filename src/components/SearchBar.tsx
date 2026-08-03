@@ -18,15 +18,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
+        marginTop: '4px'
       }}
     >
       <Search
-        size={14}
+        size={16}
         style={{
           position: 'absolute',
-          left: '10px',
-          color: 'var(--md-sys-color-on-surface-variant)'
+          left: '14px',
+          color: value ? 'var(--color-moon-yellow)' : 'var(--md-sys-color-on-surface-variant)',
+          zIndex: 1,
+          transition: 'color 0.3s ease'
         }}
       />
       <input
@@ -34,24 +37,22 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
+        className="painted-input"
         style={{
           width: '100%',
-          padding: '8px 30px 8px 30px',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: 'var(--md-sys-color-surface-variant)',
-          border: '1px solid var(--md-sys-color-outline-variant)',
-          color: 'var(--md-sys-color-on-surface)',
-          fontSize: '12px',
-          outline: 'none'
+          padding: '12px 36px 12px 40px',
+          fontSize: '13px'
         }}
       />
       {value && (
         <button
           onClick={() => onChange('')}
+          className="painted-btn-icon painted-interactive"
           style={{
             position: 'absolute',
             right: '8px',
-            color: 'var(--md-sys-color-on-surface-variant)'
+            width: '28px',
+            height: '28px'
           }}
         >
           <X size={14} />

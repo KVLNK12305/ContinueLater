@@ -18,20 +18,10 @@ export const EmailButton: React.FC<EmailButtonProps> = ({ item }) => {
     <button
       onClick={handleClick}
       title="Email yourself this link"
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '4px',
-        fontSize: '11px',
-        padding: '4px 8px',
-        borderRadius: 'var(--radius-sm)',
-        backgroundColor: 'var(--md-sys-color-surface-variant)',
-        color: 'var(--md-sys-color-on-surface-variant)',
-        border: '1px solid var(--md-sys-color-outline-variant)'
-      }}
+      className="painted-btn painted-btn-secondary painted-interactive"
+      style={{ fontSize: '11px', padding: '4px 10px' }}
     >
-      <Mail size={12} />
-      <span>Email</span>
+      <Mail size={12} /> Email
     </button>
   );
 };

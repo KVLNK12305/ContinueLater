@@ -16,56 +16,55 @@ export const AIFeatureCard: React.FC<AIFeatureCardProps> = ({
 }) => {
   return (
     <div
+      className="painted-card painted-interactive"
       style={{
-        padding: '14px',
-        borderRadius: 'var(--radius-md)',
-        backgroundColor: 'var(--md-sys-color-surface-variant)',
-        border: '1px solid var(--md-sys-color-outline-variant)',
+        padding: '18px',
         display: 'flex',
         flexDirection: 'column',
-        gap: '8px',
+        gap: '12px',
         position: 'relative'
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sparkles size={16} color="var(--md-sys-color-primary)" />
-          <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--md-sys-color-on-surface)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="painted-glow">
+            <Sparkles size={20} color="var(--color-moon-yellow)" />
+          </div>
+          <h4 className="display-font painted-text-accent" style={{ fontSize: '17px', fontWeight: 800 }}>
             {title}
           </h4>
         </div>
         <span
+          className="painted-chip"
           style={{
-            fontSize: '9px',
-            fontWeight: 700,
-            padding: '2px 6px',
-            borderRadius: 'var(--radius-full)',
-            backgroundColor: 'var(--md-sys-color-primary-container)',
-            color: 'var(--md-sys-color-on-primary-container)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '3px'
+            fontSize: '10px',
+            fontWeight: 800,
+            padding: '3px 10px',
+            backgroundColor: 'rgba(232, 165, 49, 0.2)',
+            color: 'var(--color-moon-yellow)',
+            border: '1px solid var(--color-moon-yellow)'
           }}
         >
-          <Lock size={8} /> {badgeText}
+          <Lock size={10} style={{ marginRight: '4px' }} /> {badgeText}
         </span>
       </div>
 
-      <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', lineHeight: 1.4 }}>
+      <p style={{ fontSize: '12px', color: 'var(--md-sys-color-on-surface-variant)', lineHeight: 1.6 }}>
         {description}
       </p>
 
       {previewSnippet && (
         <div
           style={{
-            padding: '8px 10px',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: 'var(--md-sys-color-surface)',
-            border: '1px stroke var(--md-sys-color-outline-variant)',
-            fontSize: '10px',
+            padding: '12px 14px',
+            borderRadius: 'var(--radius-md)',
+            backgroundColor: 'var(--color-canvas-bg)',
+            boxShadow: 'inset 2px 2px 6px rgba(0,0,0,0.8)',
+            fontSize: '11px',
             fontFamily: 'var(--font-mono)',
-            color: 'var(--md-sys-color-primary)',
-            opacity: 0.9
+            color: 'var(--color-moon-yellow)',
+            fontWeight: 600,
+            border: '1px solid var(--color-sky-swirl)'
           }}
         >
           {previewSnippet}
