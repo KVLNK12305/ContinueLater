@@ -1,6 +1,6 @@
 import React from 'react';
 import { AIFeatureCard } from '../../components/AIFeatureCard';
-import { Sparkles, Brain, ListMusic, Compass, CheckCircle2, BookmarkPlus } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export const AIPreview: React.FC = () => {
   const aiFeatures = [
@@ -27,24 +27,26 @@ export const AIPreview: React.FC = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '10px', overflowY: 'auto', paddingRight: '2px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '14px', overflowY: 'auto', paddingRight: '4px' }}>
       <div style={{ padding: '0 4px' }}>
-        <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sparkles size={18} color="var(--md-sys-color-primary)" /> Google Labs AI Preview
+        <h2 className="display-font painted-text-accent" style={{ fontSize: '20px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="painted-glow"><Sparkles size={20} color="var(--color-moon-yellow)" /></div>
+          Google Labs AI
         </h2>
-        <p style={{ fontSize: '10px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+        <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontStyle: 'italic' }}>
           Interface mockups for next-generation local AI features
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {aiFeatures.map((feat, idx) => (
-          <AIFeatureCard
-            key={idx}
-            title={feat.title}
-            description={feat.description}
-            previewSnippet={feat.previewSnippet}
-          />
+          <div key={idx} className="animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+            <AIFeatureCard
+              title={feat.title}
+              description={feat.description}
+              previewSnippet={feat.previewSnippet}
+            />
+          </div>
         ))}
       </div>
     </div>

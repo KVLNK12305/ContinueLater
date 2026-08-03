@@ -28,9 +28,9 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', backgroundColor: 'var(--md-sys-color-background)' }}>
+    <div className="canvas-wrapper">
       {/* Scrollable View Area */}
-      <main style={{ flex: 1, padding: '12px 12px 6px 12px', overflow: 'hidden' }}>
+      <main style={{ flex: 1, padding: '12px 12px 6px 12px', overflow: 'hidden', position: 'relative', zIndex: 10 }}>
         {activeTab === 'home' && <Dashboard />}
         {activeTab === 'timeline' && <Timeline />}
         {activeTab === 'insights' && <Insights />}

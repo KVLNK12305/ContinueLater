@@ -49,12 +49,13 @@ export const Dashboard: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '10px' }}>
       {/* Top Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '2px 4px 4px 4px' }}>
         <div>
-          <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>
-            ContinueLater
+          <h2 className="display-font" style={{ fontSize: '20px', fontWeight: 800 }}>
+            <span style={{ color: 'var(--md-sys-color-on-surface)' }}>Continue</span>
+            <span className="painted-text-accent">Later</span>
           </h2>
-          <p style={{ fontSize: '10px', color: 'var(--md-sys-color-on-surface-variant)' }}>
+          <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 500, fontStyle: 'italic' }}>
             Never lose your learning flow.
           </p>
         </div>
@@ -72,10 +73,10 @@ export const Dashboard: React.FC = () => {
       />
 
       {/* Main List Area */}
-      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', paddingRight: '2px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingRight: '2px' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '24px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '12px' }}>
-            Loading your learning sessions...
+          <div style={{ textAlign: 'center', padding: '24px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '12px', fontStyle: 'italic' }}>
+            Preparing your canvas...
           </div>
         ) : filteredItems.length > 0 ? (
           filteredItems.map((item) => (
@@ -90,7 +91,7 @@ export const Dashboard: React.FC = () => {
           ))
         ) : (
           <EmptyState
-            icon={searchQuery ? <Search size={32} color="var(--md-sys-color-primary)" /> : <CheckCircle2 size={32} color="var(--md-sys-color-success)" />}
+            icon={searchQuery ? <Search size={32} color="#2a2212" /> : <CheckCircle2 size={32} color="#2a2212" />}
             title={searchQuery ? 'No matching learning sessions' : 'All caught up!'}
             description={
               searchQuery
