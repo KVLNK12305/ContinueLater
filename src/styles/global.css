@@ -12,12 +12,33 @@ body {
   height: 600px;
   overflow: hidden;
   font-family: var(--font-family);
-  background-color: var(--md-sys-color-background);
+  background: var(--color-canvas-bg);
   color: var(--md-sys-color-on-background);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6; /* Slightly looser line-height for elegance */
   user-select: none;
   -webkit-font-smoothing: antialiased;
+}
+
+/* The Canvas Wrapper - applies the SVG noise filter to look like woven canvas */
+.canvas-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--gradient-sky);
+  background-size: 200% 200%;
+  position: relative;
+}
+
+.canvas-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: url(#canvas-texture);
+  opacity: 0.8;
+  z-index: 1000; /* Stays on top to texture everything */
 }
 
 #root {
@@ -27,34 +48,179 @@ body {
   flex-direction: column;
 }
 
+/* Typography Overrides */
+h1, h2, h3, h4, h5, h6, .display-font {
+  font-family: var(--font-display);
+  font-style: italic; /* Van Gogh flair */
+}
+
 button {
   font-family: inherit;
   cursor: pointer;
   border: none;
   background: none;
   outline: none;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 input, select {
   font-family: inherit;
 }
 
+/* --- Van Gogh "Painted" Utilities --- */
+
+.painted-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md); /* Organic shape */
+  box-shadow: var(--shadow-impasto-base);
+  border: 2px solid var(--color-sky-swirl);
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* A thicker stroke of paint at the top of cards */
+.painted-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--gradient-brush);
+  border-radius: var(--radius-full);
+}
+
+.painted-card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-impasto-hover);
+  border-color: var(--color-sky-light);
+}
+
+/* Buttons */
+.painted-btn {
+  border-radius: var(--radius-sm);
+  padding: 6px 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-impasto-base);
+}
+
+.painted-btn-primary {
+  background: var(--gradient-accent); /* Golden yellow */
+  color: #2a2212; /* Dark text for contrast against yellow */
+  border: 1px solid #d37322;
+}
+
+.painted-btn-primary:hover {
+  box-shadow: var(--shadow-impasto-hover);
+}
+
+.painted-btn-primary:active {
+  box-shadow: var(--shadow-impasto-active);
+}
+
+.painted-btn-secondary {
+  background: var(--color-sky-light);
+  color: #fff;
+  border: 1px solid var(--color-sky-swirl);
+}
+
+.painted-btn-secondary:hover {
+  background: var(--color-sky-swirl);
+  box-shadow: var(--shadow-impasto-hover);
+}
+
+.painted-btn-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-elevated);
+  border: 2px solid var(--color-sky-swirl);
+  color: var(--md-sys-color-on-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-impasto-base);
+}
+
+.painted-btn-icon:hover {
+  border-color: var(--color-moon-yellow);
+  color: var(--color-moon-yellow);
+  box-shadow: var(--shadow-impasto-hover);
+}
+
+/* Inputs */
+.painted-input {
+  background: rgba(13, 20, 36, 0.6); /* Very dark indigo well */
+  box-shadow: inset 2px 3px 6px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.05);
+  border-radius: var(--radius-lg);
+  border: none;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  padding: 10px 16px;
+  font-family: var(--font-family);
+  transition: all 0.3s ease;
+}
+
+.painted-input:focus {
+  background: rgba(26, 44, 91, 0.8);
+  box-shadow: inset 2px 3px 6px rgba(0,0,0,0.8), 0 0 0 2px var(--color-moon-yellow);
+}
+
+/* Chips/Pills */
+.painted-chip {
+  border-radius: var(--radius-full);
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-sky-swirl);
+  color: var(--md-sys-color-on-surface-variant);
+  padding: 4px 14px;
+  font-size: 12px;
+  font-family: var(--font-display);
+  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-impasto-base);
+  cursor: pointer;
+}
+
+.painted-chip:hover {
+  border-color: var(--color-sky-light);
+  color: var(--md-sys-color-on-surface);
+}
+
+.painted-chip-active {
+  background: var(--gradient-accent);
+  color: #2a2212;
+  border-color: #d37322;
+  font-weight: 700;
+}
+
+/* Painted Text */
+.painted-text-accent {
+  color: var(--color-moon-yellow);
+  text-shadow: 1px 1px 0px rgba(0,0,0,0.8);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0,0,0,0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--md-sys-color-outline);
+  background: var(--color-sky-swirl);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--md-sys-color-on-surface-variant);
+  background: var(--color-moon-yellow);
 }
