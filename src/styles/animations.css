@@ -1,0 +1,36 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(168, 85, 247, 0.7);
+  }
+}
+
+@keyframes floatFlame {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.08);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-flame {
+  animation: floatFlame 2s ease-in-out infinite;
+}
