@@ -29,18 +29,18 @@ export const AIPreview: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '14px', overflowY: 'auto', paddingRight: '4px' }}>
       <div style={{ padding: '0 4px' }}>
-        <h2 className="display-font painted-text-accent" style={{ fontSize: '20px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div className="painted-glow"><Sparkles size={20} color="var(--color-moon-yellow)" /></div>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--nm-text-primary)' }}>
+          <Sparkles size={18} color="var(--nm-accent)" />
           Google Labs AI
         </h2>
-        <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontStyle: 'italic' }}>
-          Interface mockups for next-generation local AI features
+        <p style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontStyle: 'italic', marginTop: '2px' }}>
+          Interface mockups for next-generation local AI features (Coming soon)
         </p>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
         {aiFeatures.map((feat, idx) => (
-          <div key={idx} className="animate-fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+          <div key={idx} className="animate-fade-in" style={{ animationDelay: `${idx * 0.05}s` }}>
             <AIFeatureCard
               title={feat.title}
               description={feat.description}

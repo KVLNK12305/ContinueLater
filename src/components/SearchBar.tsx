@@ -27,7 +27,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         style={{
           position: 'absolute',
           left: '14px',
-          color: value ? 'var(--color-moon-yellow)' : 'var(--md-sys-color-on-surface-variant)',
+          color: value ? 'var(--nm-accent)' : 'var(--nm-text-secondary)',
           zIndex: 1,
           transition: 'color 0.3s ease'
         }}
@@ -37,7 +37,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="painted-input"
+        className="nm-input"
         style={{
           width: '100%',
           padding: '12px 36px 12px 40px',
@@ -47,7 +47,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       {value && (
         <button
           onClick={() => onChange('')}
-          className="painted-btn-icon painted-interactive"
+          className="nm-btn-icon"
           style={{
             position: 'absolute',
             right: '8px',

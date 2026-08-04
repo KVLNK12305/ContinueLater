@@ -22,7 +22,7 @@ export const CalendarButton: React.FC<CalendarButtonProps> = ({ item }) => {
     <button
       onClick={handleClick}
       title="Add to Google Calendar"
-      className="painted-btn painted-btn-secondary painted-interactive"
+      className="nm-btn nm-btn-secondary"
       style={{ fontSize: '11px', padding: '4px 10px' }}
     >
       <Calendar size={12} /> Calendar

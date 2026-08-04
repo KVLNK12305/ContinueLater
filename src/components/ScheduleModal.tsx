@@ -44,8 +44,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(16, 22, 38, 0.8)',
-        backdropFilter: 'blur(8px)',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
@@ -55,106 +54,118 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="painted-card animate-fade-in"
+        className="nm-card animate-fade-in"
         style={{
           width: '100%',
           maxWidth: '360px',
           display: 'flex',
           flexDirection: 'column',
-          padding: 0
+          padding: 0,
+          overflow: 'hidden'
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header */}
         <div
           style={{
             padding: '16px',
-            borderBottom: '2px solid var(--color-sky-swirl)',
+            borderBottom: '1px solid var(--nm-shadow-dark)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'var(--color-surface)'
+            background: 'var(--nm-bg)'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Clock size={20} color="var(--color-moon-yellow)" />
-            <h3 className="display-font" style={{ fontSize: '18px', fontWeight: 700, color: 'var(--md-sys-color-on-surface)' }}>Schedule Reminder</h3>
+            <Clock size={20} color="var(--nm-accent)" />
+            <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--nm-text-primary)' }}>Schedule Reminder</h3>
           </div>
-          <button onClick={onClose} className="painted-btn-icon painted-interactive" style={{ width: '28px', height: '28px' }}>
+          <button onClick={onClose} className="nm-btn-icon" style={{ width: '28px', height: '28px' }}>
             <X size={14} />
           </button>
         </div>
 
-        <div style={{ padding: '14px 16px', fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', background: 'var(--color-surface)' }}>
-          Item: <strong style={{ color: 'var(--color-moon-yellow)' }}>{itemTitle}</strong>
+        {/* Selected Item Info */}
+        <div style={{ padding: '12px 16px', fontSize: '12px', color: 'var(--nm-text-secondary)', background: 'var(--nm-bg)' }}>
+          Item: <strong style={{ color: 'var(--nm-text-primary)' }}>{itemTitle}</strong>
         </div>
 
-        <div style={{ padding: '0 16px 16px 16px', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '300px', overflowY: 'auto', background: 'var(--color-surface)' }}>
-          {options.map((opt) => (
-            <label
-              key={opt.key}
-              className="painted-interactive"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: selectedOption === opt.key ? 'rgba(252, 217, 85, 0.1)' : 'var(--color-surface-elevated)',
-                border: selectedOption === opt.key ? '2px solid var(--color-moon-yellow)' : '1px solid var(--color-sky-swirl)',
-                boxShadow: selectedOption === opt.key ? 'var(--shadow-glow)' : 'var(--shadow-impasto-base)',
-                cursor: 'pointer'
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span className="display-font" style={{ fontSize: '15px', fontWeight: 700, color: selectedOption === opt.key ? 'var(--color-moon-yellow)' : 'var(--md-sys-color-on-surface)' }}>
-                  {opt.label}
-                </span>
-                <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', marginTop: '2px' }}>
-                  {opt.sub}
-                </span>
-              </div>
-              <input
-                type="radio"
-                name="scheduleOption"
-                checked={selectedOption === opt.key}
-                onChange={() => setSelectedOption(opt.key)}
-                style={{ accentColor: 'var(--color-moon-yellow)', width: '16px', height: '16px' }}
-              />
-            </label>
-          ))}
+        {/* Options List */}
+        <div style={{ padding: '0 16px 16px 16px', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '300px', overflowY: 'auto', background: 'var(--nm-bg)' }}>
+          {options.map((opt) => {
+            const isSelected = selectedOption === opt.key;
+            return (
+              <label
+                key={opt.key}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  borderRadius: 'var(--nm-radius-md)',
+                  backgroundColor: 'var(--nm-bg)',
+                  boxShadow: isSelected 
+                    ? 'inset 3px 3px 6px var(--nm-shadow-dark), inset -3px -3px 6px var(--nm-shadow-light)'
+                    : '3px 3px 6px var(--nm-shadow-dark), -3px -3px 6px var(--nm-shadow-light)',
+                  border: isSelected ? '1.5px solid var(--nm-accent)' : '1px solid transparent',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: isSelected ? 'var(--nm-accent)' : 'var(--nm-text-primary)' }}>
+                    {opt.label}
+                  </span>
+                  <span style={{ fontSize: '10px', color: 'var(--nm-text-secondary)', marginTop: '2px' }}>
+                    {opt.sub}
+                  </span>
+                </div>
+                <input
+                  type="radio"
+                  name="scheduleOption"
+                  checked={isSelected}
+                  onChange={() => setSelectedOption(opt.key)}
+                  style={{ accentColor: 'var(--nm-accent)', width: '16px', height: '16px' }}
+                />
+              </label>
+            );
+          })}
 
           {selectedOption === 'custom' && (
             <div className="animate-fade-in" style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label className="display-font" style={{ fontSize: '13px', color: 'var(--color-moon-yellow)', fontWeight: 700 }}>Select Date & Time</label>
+              <label style={{ fontSize: '12px', color: 'var(--nm-text-primary)', fontWeight: 700 }}>Select Date & Time</label>
               <input
                 type="datetime-local"
                 value={customDateTime}
                 onChange={(e) => setCustomDateTime(e.target.value)}
-                className="painted-input"
+                className="nm-input"
               />
             </div>
           )}
         </div>
 
+        {/* Footer Actions */}
         <div
           style={{
             padding: '16px',
-            borderTop: '2px solid var(--color-sky-swirl)',
+            borderTop: '1px solid var(--nm-shadow-dark)',
             display: 'flex',
             justifyContent: 'flex-end',
             gap: '12px',
-            background: 'var(--color-surface)'
+            background: 'var(--nm-bg)'
           }}
         >
           <button
             onClick={onClose}
-            className="painted-btn painted-btn-secondary painted-interactive"
+            className="nm-btn nm-btn-secondary"
+            style={{ padding: '6px 14px', fontSize: '12px' }}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="painted-btn painted-btn-primary painted-interactive"
+            className="nm-btn nm-btn-primary"
+            style={{ padding: '6px 14px', fontSize: '12px' }}
           >
             Set Reminder
           </button>

@@ -8,31 +8,30 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
-  icon = <Target size={36} color="var(--color-moon-yellow)" />,
+  icon = <Target size={36} color="var(--nm-accent)" />,
   title,
   description
 }) => {
   return (
     <div
-      className="painted-card animate-fade-in"
+      className="nm-card animate-fade-in"
       style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '40px 24px',
+        padding: '36px 20px',
         textAlign: 'center',
         gap: '16px',
         margin: '12px 0'
       }}
     >
       <div 
-        className="painted-glow"
         style={{ 
           padding: '16px', 
-          borderRadius: 'var(--radius-full)', 
-          background: 'rgba(232, 165, 49, 0.2)',
-          border: '1px solid var(--color-moon-glow)',
+          borderRadius: '50%', 
+          background: 'var(--nm-bg)',
+          boxShadow: 'inset 3px 3px 6px var(--nm-shadow-dark), inset -3px -3px 6px var(--nm-shadow-light)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
@@ -41,10 +40,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         {icon}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <h3 className="display-font painted-text-accent" style={{ fontSize: '20px', fontWeight: 800 }}>
+        <h3 className="display-font" style={{ fontSize: '18px', fontWeight: 800, color: 'var(--nm-text-primary)' }}>
           {title}
         </h3>
-        <p style={{ fontSize: '13px', color: 'var(--md-sys-color-on-surface-variant)', maxWidth: '260px', lineHeight: 1.6 }}>
+        <p style={{ fontSize: '12px', color: 'var(--nm-text-secondary)', maxWidth: '260px', lineHeight: 1.5 }}>
           {description}
         </p>
       </div>

@@ -17,34 +17,26 @@ export const ProgressRing: React.FC<ProgressRingProps> = ({
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (Math.min(100, Math.max(0, progress)) / 100) * circumference;
 
-  const gradientId = `paintProgressGradient-${size}`;
-
   return (
-    <div className="painted-interactive" style={{ position: 'relative', width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ filter: 'drop-shadow(2px 3px 3px rgba(0,0,0,0.6))' }}>
-        <defs>
-          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--color-moon-yellow)" />
-            <stop offset="100%" stopColor="var(--color-moon-glow)" />
-          </linearGradient>
-        </defs>
-        {/* Background Canvas Track */}
+    <div style={{ position: 'relative', width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {/* Background Track - Neumorphic Recessed Track */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="rgba(0,0,0,0.5)"
+          stroke="var(--nm-shadow-dark)"
           strokeWidth={strokeWidth}
-          strokeDasharray="4, 2" /* Mimics dotted rough canvas stroke */
+          style={{ opacity: 0.5 }}
         />
-        {/* Thick Impasto Progress Stroke */}
+        {/* Progress Stroke - Colored with Accent */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={`url(#${gradientId})`}
+          stroke="var(--nm-accent)"
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
@@ -57,7 +49,7 @@ export const ProgressRing: React.FC<ProgressRingProps> = ({
         />
       </svg>
       {showText && (
-        <span className="display-font painted-text-accent" style={{ position: 'absolute', fontSize: '11px', fontWeight: 800 }}>
+        <span style={{ position: 'absolute', fontSize: '10px', fontWeight: 700, color: 'var(--nm-text-primary)' }}>
           {Math.round(progress)}%
         </span>
       )}

@@ -18,7 +18,7 @@ export const EmailButton: React.FC<EmailButtonProps> = ({ item }) => {
     <button
       onClick={handleClick}
       title="Email yourself this link"
-      className="painted-btn painted-btn-secondary painted-interactive"
+      className="nm-btn nm-btn-secondary"
       style={{ fontSize: '11px', padding: '4px 10px' }}
     >
       <Mail size={12} /> Email

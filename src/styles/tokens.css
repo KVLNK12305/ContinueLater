@@ -1,93 +1,113 @@
+/* Neumorphic Design Tokens */
+
 :root {
   /* Fonts */
-  --font-display: 'Playfair Display', serif;
-  --font-family: 'Lora', serif;
+  --font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* The Starry Night Palette */
-  --color-canvas-bg: #101626; /* Deepest indigo night sky */
-  --color-sky-swirl: #1a2c5b; /* Rich ultramarine */
-  --color-sky-light: #2d4f83; /* Lighter cerulean brushstrokes */
-  --color-moon-yellow: #fcd955; /* Radiant moon/star yellow */
-  --color-moon-glow: #e8a531; /* Golden warm glow */
-  --color-cypress-dark: #12201b; /* Dark foreground trees */
-  --color-cypress-green: #254030;
-  
-  --color-surface: rgba(26, 44, 91, 0.8);
-  --color-surface-elevated: rgba(45, 79, 131, 0.9);
-  
-  /* Paint Highlights */
-  --color-paint-highlight: rgba(255, 255, 255, 0.15);
-  --color-paint-shadow: rgba(0, 0, 0, 0.6);
-
-  /* Gradients mimicking swirled paint */
-  --gradient-sky: radial-gradient(circle at 70% 30%, var(--color-sky-light) 0%, var(--color-sky-swirl) 40%, var(--color-canvas-bg) 100%);
-  --gradient-star: radial-gradient(circle at center, #fff 0%, var(--color-moon-yellow) 40%, var(--color-moon-glow) 100%);
-  --gradient-brush: linear-gradient(170deg, var(--color-sky-light) 0%, var(--color-sky-swirl) 100%);
-  --gradient-accent: linear-gradient(160deg, var(--color-moon-yellow) 0%, var(--color-moon-glow) 100%);
-
-  /* Text Colors */
-  --md-sys-color-on-background: #e8ecef;
-  --md-sys-color-on-surface: #f4f6f8;
-  --md-sys-color-on-surface-variant: #a5b4c9;
-  --md-sys-color-on-primary: #101626;
-
-  /* Utility Colors mapped to palette */
-  --md-sys-color-primary: var(--color-moon-yellow);
-  --md-sys-color-secondary: var(--color-sky-light);
-  --md-sys-color-success: #6bb36b; /* Lighter cypress */
-  --md-sys-color-warning: var(--color-moon-glow);
-  --md-sys-color-error: #d1563f; /* Terracotta roof color */
-
-  /* Organic Brushstroke Radii */
-  /* Instead of perfect circles, we use irregular multi-value radii */
-  --radius-sm: 4px 6px 3px 5px / 5px 4px 6px 3px;
-  --radius-md: 12px 8px 14px 10px / 10px 14px 9px 12px;
-  --radius-lg: 25px 15px 22px 18px / 18px 22px 15px 25px;
-  --radius-full: 255px 15px 225px 15px / 15px 225px 15px 255px; /* Extremely organic oval */
-
-  /* Impasto Shadows (Thick Paint) */
-  /* Multiple sharp drop shadows to simulate physical thickness of paint layers */
-  --shadow-impasto-base: 
-    1px 1px 0 rgba(255,255,255,0.1) inset,
-    -1px -2px 0 var(--color-paint-shadow) inset,
-    2px 3px 4px rgba(0,0,0,0.5);
-    
-  --shadow-impasto-hover: 
-    1px 1px 0 rgba(255,255,255,0.2) inset,
-    -2px -3px 0 var(--color-paint-shadow) inset,
-    3px 6px 8px rgba(0,0,0,0.6);
-
-  --shadow-impasto-active: 
-    0 1px 0 rgba(255,255,255,0.1) inset,
-    -1px -1px 0 var(--color-paint-shadow) inset,
-    1px 1px 2px rgba(0,0,0,0.5);
-    
-  --shadow-glow: 0 0 15px var(--color-moon-glow);
+  /* Default theme is mapped to prefers-color-scheme (System) */
+  --nm-bg: #e8ecf1;
+  --nm-bg-elevated: #edf1f6;
+  --nm-shadow-light: #ffffff;
+  --nm-shadow-dark: #b8c1cc;
+  --nm-text-primary: #2a2f3a;
+  --nm-text-secondary: #5c6470;
+  --nm-accent: #6c5ce7;
+  --nm-accent-soft: #a29bfe;
+  --nm-success: #00b894;
+  --nm-warning: #fdcb6e;
+  --nm-danger: #ff7675;
+  --nm-radius-sm: 12px;
+  --nm-radius-md: 18px;
+  --nm-radius-lg: 24px;
 }
 
-[data-theme='light'] {
-  /* Sunflowers Palette for Light Mode */
-  --color-canvas-bg: #f4e8c1; /* Warm canvas */
-  --color-sky-swirl: #e8cd70; /* Yellow ochre */
-  --color-sky-light: #fceea4; /* Chrome yellow */
-  --color-moon-yellow: #d37322; /* Burnt orange */
-  --color-moon-glow: #a54619; /* Deep rust */
-  
-  --color-surface: rgba(232, 205, 112, 0.4);
-  --color-surface-elevated: rgba(252, 238, 164, 0.8);
+@media (prefers-color-scheme: dark) {
+  :root {
+    --nm-bg: #1e2128;
+    --nm-bg-elevated: #23262e;
+    --nm-shadow-light: #2c3038;
+    --nm-shadow-dark: #121317;
+    --nm-text-primary: #eef0f4;
+    --nm-text-secondary: #9aa1ad;
+    --nm-accent: #a29bfe;
+    --nm-accent-soft: #6c5ce7;
+    --nm-success: #55efc4;
+    --nm-warning: #ffeaa7;
+    --nm-danger: #ff9f9f;
+  }
+}
 
-  --gradient-sky: radial-gradient(circle at 50% 0%, var(--color-sky-light) 0%, var(--color-canvas-bg) 100%);
-  
-  --md-sys-color-on-background: #2a2212;
-  --md-sys-color-on-surface: #3d2f16;
-  --md-sys-color-on-surface-variant: #6b5734;
-  --md-sys-color-on-primary: #fceea4;
-  
-  --md-sys-color-primary: var(--color-moon-yellow);
-  
-  --shadow-impasto-base: 
-    1px 1px 0 rgba(255,255,255,0.4) inset,
-    -1px -2px 0 rgba(165, 70, 25, 0.2) inset,
-    2px 3px 4px rgba(0,0,0,0.15);
+:root[data-theme="light"] {
+  --nm-bg: #e8ecf1;
+  --nm-bg-elevated: #edf1f6;
+  --nm-shadow-light: #ffffff;
+  --nm-shadow-dark: #b8c1cc;
+  --nm-text-primary: #2a2f3a;
+  --nm-text-secondary: #5c6470;
+  --nm-accent: #6c5ce7;
+  --nm-accent-soft: #a29bfe;
+  --nm-success: #00b894;
+  --nm-warning: #fdcb6e;
+  --nm-danger: #ff7675;
+  --nm-radius-sm: 12px;
+  --nm-radius-md: 18px;
+  --nm-radius-lg: 24px;
+}
+
+:root[data-theme="dark"] {
+  --nm-bg: #1e2128;
+  --nm-bg-elevated: #23262e;
+  --nm-shadow-light: #2c3038;
+  --nm-shadow-dark: #121317;
+  --nm-text-primary: #eef0f4;
+  --nm-text-secondary: #9aa1ad;
+  --nm-accent: #a29bfe;
+  --nm-accent-soft: #6c5ce7;
+  --nm-success: #55efc4;
+  --nm-warning: #ffeaa7;
+  --nm-danger: #ff9f9f;
+  --nm-radius-sm: 12px;
+  --nm-radius-md: 18px;
+  --nm-radius-lg: 24px;
+}
+
+:root[data-theme="system"] {
+  /* Inherit default system colors */
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    --nm-bg: #1e2128;
+    --nm-bg-elevated: #23262e;
+    --nm-shadow-light: #2c3038;
+    --nm-shadow-dark: #121317;
+    --nm-text-primary: #eef0f4;
+    --nm-text-secondary: #9aa1ad;
+    --nm-accent: #a29bfe;
+    --nm-accent-soft: #6c5ce7;
+    --nm-success: #55efc4;
+    --nm-warning: #ffeaa7;
+    --nm-danger: #ff9f9f;
+  }
+}
+
+/* Neumorphic shadow helpers */
+.nm-raised {
+  background: var(--nm-bg);
+  box-shadow: 6px 6px 12px var(--nm-shadow-dark),
+              -6px -6px 12px var(--nm-shadow-light);
+  border-radius: var(--nm-radius-md);
+}
+
+.nm-inset {
+  background: var(--nm-bg);
+  box-shadow: inset 4px 4px 8px var(--nm-shadow-dark),
+              inset -4px -4px 8px var(--nm-shadow-light);
+  border-radius: var(--nm-radius-md);
+}
+
+.nm-pressed:active {
+  box-shadow: inset 3px 3px 6px var(--nm-shadow-dark),
+              inset -3px -3px 6px var(--nm-shadow-light);
 }

@@ -15,37 +15,37 @@ export const Insights: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '14px', overflowY: 'auto', paddingRight: '2px' }}>
       <div style={{ padding: '0 4px' }}>
-        <h2 className="display-font" style={{ fontSize: '20px', fontWeight: 800, color: 'var(--md-sys-color-on-surface)' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--nm-text-primary)' }}>
           Smart Insights
         </h2>
-        <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontStyle: 'italic' }}>
+        <p style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontStyle: 'italic', marginTop: '2px' }}>
           Track your learning velocity and unlock achievement badges
         </p>
       </div>
 
       {/* Grid of Key Metrics */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-        <div className="painted-card painted-card-interactive animate-fade-in" style={statCardStyle}>
-          <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 600 }}>Started Sessions</span>
-          <span className="display-font" style={{ fontSize: '24px', fontWeight: 800, color: 'var(--md-sys-color-on-surface)' }}>{stats.sessionsStarted}</span>
+        <div className="nm-card nm-card-interactive animate-fade-in" style={statCardStyle}>
+          <span style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontWeight: 600 }}>Started Sessions</span>
+          <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--nm-text-primary)', marginTop: '4px' }}>{stats.sessionsStarted}</span>
         </div>
-        <div className="painted-card painted-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.05s'}}>
-          <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 600 }}>Finished</span>
-          <span className="display-font painted-text-accent" style={{ fontSize: '24px', fontWeight: 800 }}>{stats.sessionsFinished}</span>
+        <div className="nm-card nm-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.05s'}}>
+          <span style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontWeight: 600 }}>Finished</span>
+          <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--nm-accent)', marginTop: '4px' }}>{stats.sessionsFinished}</span>
         </div>
-        <div className="painted-card painted-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.1s'}}>
-          <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 600 }}>Recovered</span>
-          <span className="display-font painted-text-accent" style={{ fontSize: '24px', fontWeight: 800 }}>{stats.sessionsRecovered}</span>
+        <div className="nm-card nm-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.1s'}}>
+          <span style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontWeight: 600 }}>Recovered</span>
+          <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--nm-accent)', marginTop: '4px' }}>{stats.sessionsRecovered}</span>
         </div>
-        <div className="painted-card painted-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.15s'}}>
-          <span style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 600 }}>Learning Hours</span>
-          <span className="display-font" style={{ fontSize: '24px', fontWeight: 800, color: 'var(--md-sys-color-success)' }}>{learningHours}h</span>
+        <div className="nm-card nm-card-interactive animate-fade-in" style={{...statCardStyle, animationDelay: '0.15s'}}>
+          <span style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontWeight: 600 }}>Learning Hours</span>
+          <span style={{ fontSize: '22px', fontWeight: 800, color: 'var(--nm-success)', marginTop: '4px' }}>{learningHours}h</span>
         </div>
       </div>
 
       {/* Analytics Summary */}
       <div
-        className="painted-card painted-card-interactive animate-fade-in"
+        className="nm-card nm-card-interactive animate-fade-in"
         style={{
           padding: '16px',
           display: 'flex',
@@ -55,32 +55,30 @@ export const Insights: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px' }}>
-          <span style={{ color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 600 }}>Consistency Score</span>
-          <span className="painted-text-accent display-font" style={{ fontWeight: 800, fontSize: '16px' }}>{consistencyPercent}%</span>
+          <span style={{ color: 'var(--nm-text-secondary)', fontWeight: 600 }}>Consistency Score</span>
+          <span style={{ fontWeight: 800, fontSize: '14px', color: 'var(--nm-accent)' }}>{consistencyPercent}%</span>
         </div>
         
-        {/* Painted Progress Bar */}
-        <div style={{ width: '100%', height: '14px', backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: 'var(--radius-full)', overflow: 'hidden', boxShadow: 'inset 1px 2px 4px rgba(0,0,0,0.8)' }}>
-          <div style={{ width: `${consistencyPercent}%`, height: '100%', background: 'var(--gradient-accent)', borderRadius: 'var(--radius-full)', boxShadow: 'var(--shadow-impasto-base)' }} />
+        {/* Neumorphic Inset Progress Bar */}
+        <div style={{ width: '100%', height: '12px', backgroundColor: 'var(--nm-bg)', borderRadius: '6px', overflow: 'hidden', boxShadow: 'inset 2px 2px 4px var(--nm-shadow-dark), inset -2px -2px 4px var(--nm-shadow-light)', border: '1px solid rgba(255,255,255,0.02)' }}>
+          <div style={{ width: `${consistencyPercent}%`, height: '100%', background: 'var(--nm-accent)', borderRadius: '6px' }} />
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', paddingTop: '6px' }}>
-          <span style={{ color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 500 }}>Longest Streak</span>
-          <span className="painted-text-accent display-font" style={{ fontWeight: 800 }}>{stats.longestStreak} days</span>
+          <span style={{ color: 'var(--nm-text-secondary)', fontWeight: 500 }}>Longest Streak</span>
+          <span style={{ fontWeight: 800, color: 'var(--nm-text-primary)' }}>{stats.longestStreak} days</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-          <span style={{ color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 500 }}>Most Visited Topic</span>
-          <span style={{ fontWeight: 700 }}>{topTopic}</span>
+          <span style={{ color: 'var(--nm-text-secondary)', fontWeight: 500 }}>Most Visited Topic</span>
+          <span style={{ fontWeight: 700, color: 'var(--nm-text-primary)' }}>{topTopic}</span>
         </div>
       </div>
 
       {/* Badges Section */}
       <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '10px', animationDelay: '0.25s' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div className="painted-glow" style={{ display: 'flex', alignItems: 'center' }}>
-            <Award size={18} color="var(--color-moon-yellow)" />
-          </div>
-          <h3 className="display-font" style={{ fontSize: '18px', fontWeight: 800 }}>Achievement Badges</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0 4px' }}>
+          <Award size={18} color="var(--nm-accent)" />
+          <h3 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--nm-text-primary)' }}>Achievement Badges</h3>
         </div>
         <BadgeGrid unlockedBadgeIds={stats.unlockedBadges} />
       </div>
@@ -89,8 +87,8 @@ export const Insights: React.FC = () => {
 };
 
 const statCardStyle: React.CSSProperties = {
-  padding: '16px 14px',
+  padding: '14px 12px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '4px'
+  gap: '2px'
 };

@@ -10,7 +10,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
   const renderIcon = (iconName: string, isUnlocked: boolean) => {
     const props = {
       size: 26,
-      color: isUnlocked ? '#2a2212' : 'var(--md-sys-color-on-surface-variant)'
+      color: isUnlocked ? 'var(--nm-accent)' : 'var(--nm-text-secondary)'
     };
 
     let iconNode;
@@ -25,9 +25,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
     }
 
     return (
-      <div style={{
-        filter: isUnlocked ? 'drop-shadow(1px 2px 2px rgba(0,0,0,0.4))' : 'none'
-      }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {iconNode}
       </div>
     );
@@ -38,7 +36,7 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '14px'
+        gap: '12px'
       }}
     >
       {ALL_BADGES.map((badge) => {
@@ -47,24 +45,37 @@ export const BadgeGrid: React.FC<BadgeGridProps> = ({ unlockedBadgeIds }) => {
         return (
           <div
             key={badge.id}
-            className={`painted-card ${isUnlocked ? 'painted-interactive' : ''}`}
+            className={`nm-card ${isUnlocked ? 'nm-pop-in' : ''}`}
             style={{
               padding: '16px 8px',
-              backgroundColor: isUnlocked ? 'var(--color-moon-yellow)' : 'var(--color-surface)',
-              border: isUnlocked ? '2px solid #a54619' : '2px solid var(--color-sky-swirl)',
-              opacity: isUnlocked ? 1 : 0.6,
+              backgroundColor: 'var(--nm-bg)',
+              boxShadow: isUnlocked 
+                ? '6px 6px 12px var(--nm-shadow-dark), -6px -6px 12px var(--nm-shadow-light)'
+                : 'inset 3px 3px 6px var(--nm-shadow-dark), inset -3px -3px 6px var(--nm-shadow-light)',
+              border: isUnlocked ? '2px solid var(--nm-accent)' : '1px solid transparent',
+              opacity: isUnlocked ? 1 : 0.55,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               textAlign: 'center',
-              gap: '10px'
+              gap: '8px',
+              transition: 'all 0.3s ease'
             }}
           >
             {renderIcon(badge.icon, isUnlocked)}
-            <span className="display-font" style={{ fontSize: '13px', fontWeight: 800, color: isUnlocked ? '#2a2212' : 'var(--md-sys-color-on-surface)' }}>
+            <span style={{ 
+              fontSize: '11px', 
+              fontWeight: 700, 
+              color: isUnlocked ? 'var(--nm-text-primary)' : 'var(--nm-text-secondary)',
+              marginTop: '4px'
+            }}>
               {badge.name}
             </span>
-            <span style={{ fontSize: '10px', color: isUnlocked ? 'rgba(42,34,18,0.8)' : 'var(--md-sys-color-on-surface-variant)', lineHeight: 1.3 }}>
+            <span style={{ 
+              fontSize: '9px', 
+              color: 'var(--nm-text-secondary)', 
+              lineHeight: 1.3 
+            }}>
               {badge.description}
             </span>
           </div>

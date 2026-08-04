@@ -26,42 +26,43 @@ export const Timeline: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '10px' }}>
       <div style={{ padding: '0 4px' }}>
-        <h2 className="display-font" style={{ fontSize: '20px', fontWeight: 800, color: 'var(--md-sys-color-on-surface)' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--nm-text-primary)' }}>
           Learning Timeline
         </h2>
-        <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontStyle: 'italic' }}>
+        <p style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontStyle: 'italic', marginTop: '2px' }}>
           Chronological history of your learning sessions
         </p>
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '16px', paddingRight: '4px' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '24px', fontSize: '12px', fontStyle: 'italic' }}>Painting timeline...</div>
+          <div style={{ textAlign: 'center', padding: '24px', fontSize: '12px', color: 'var(--nm-text-secondary)', fontStyle: 'italic' }}>Painting timeline...</div>
         ) : groupedTimeline.length > 0 ? (
           groupedTimeline.map(([groupTitle, groupItems]) => (
             <div key={groupTitle} className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div
-                className="painted-chip"
+                className="nm-chip"
                 style={{
-                  fontSize: '11px',
-                  fontWeight: 800,
-                  color: 'var(--color-moon-yellow)',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  color: 'var(--nm-accent)',
                   textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  padding: '6px 14px',
+                  letterSpacing: '0.5px',
+                  padding: '4px 12px',
                   alignSelf: 'flex-start',
-                  border: '1px solid var(--color-moon-glow)'
+                  boxShadow: '2px 2px 4px var(--nm-shadow-dark), -2px -2px 4px var(--nm-shadow-light)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)'
                 }}
               >
-                <Calendar size={12} /> {groupTitle}
+                <Calendar size={11} style={{ marginRight: '4px' }} /> {groupTitle}
               </div>
 
               {groupItems.map((item) => (
                 <div
                   key={item.id}
-                  className="painted-card painted-card-interactive"
+                  className="nm-card nm-card-interactive"
                   style={{
-                    padding: '14px 16px',
+                    padding: '12px 14px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -72,11 +73,10 @@ export const Timeline: React.FC = () => {
                     <ProgressRing progress={item.completionPercent} showText size={36} />
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <h4
-                        className="display-font"
                         style={{
-                          fontSize: '14px',
+                          fontSize: '13px',
                           fontWeight: 700,
-                          color: 'var(--md-sys-color-on-surface)',
+                          color: 'var(--nm-text-primary)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis'
@@ -84,8 +84,8 @@ export const Timeline: React.FC = () => {
                       >
                         {item.title}
                       </h4>
-                      <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 500, marginTop: '2px' }}>
-                        {item.source.toUpperCase()} · <span className="painted-text-accent">{formatRemainingTime(item.estimatedRemainingMinutes)}</span>
+                      <p style={{ fontSize: '10px', color: 'var(--nm-text-secondary)', fontWeight: 500, marginTop: '2px' }}>
+                        {item.source.toUpperCase()} · <span style={{ color: 'var(--nm-accent)' }}>{formatRemainingTime(item.estimatedRemainingMinutes)}</span>
                       </p>
                     </div>
                   </div>
@@ -94,21 +94,21 @@ export const Timeline: React.FC = () => {
                     <button
                       onClick={() => deleteItem(item.id)}
                       title="Delete"
-                      className="painted-btn-icon painted-interactive"
-                      style={{ padding: '6px', color: 'var(--md-sys-color-error)' }}
+                      className="nm-btn-icon"
+                      style={{ width: '28px', height: '28px', color: 'var(--nm-danger)' }}
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={13} />
                     </button>
                     <button
                       onClick={() => resumeItem(item)}
-                      className="painted-btn painted-btn-primary painted-interactive"
+                      className="nm-btn nm-btn-primary"
                       style={{
-                        padding: '6px 14px',
-                        fontSize: '12px',
+                        padding: '6px 12px',
+                        fontSize: '11px',
                         fontWeight: 700
                       }}
                     >
-                      <Play size={10} fill="currentColor" /> Resume
+                      <Play size={9} fill="currentColor" /> Resume
                     </button>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ export const Timeline: React.FC = () => {
           ))
         ) : (
           <EmptyState
-            icon={<Clock size={32} color="#2a2212" />}
+            icon={<Clock size={28} color="var(--nm-text-secondary)" />}
             title="No timeline history yet"
             description="Start browsing learning content on supported sites to populate your timeline."
           />

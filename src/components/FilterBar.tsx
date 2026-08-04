@@ -44,7 +44,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           <button
             key={cat.key}
             onClick={() => onSelectCategory(cat.key)}
-            className={`painted-chip painted-interactive ${isActive ? 'painted-chip-active' : ''}`}
+            className={`nm-chip ${isActive ? 'nm-chip-active' : ''}`}
             style={{ padding: '6px 14px' }}
           >
             {cat.icon}
@@ -55,10 +55,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   fontSize: '10px',
                   fontWeight: 800,
                   padding: '1px 6px',
-                  borderRadius: 'var(--radius-full)',
-                  background: isActive ? 'rgba(0,0,0,0.2)' : 'var(--color-surface)',
-                  color: isActive ? '#2a2212' : 'var(--md-sys-color-on-surface)',
-                  boxShadow: isActive ? 'none' : 'inset 1px 1px 2px rgba(0,0,0,0.5)'
+                  borderRadius: '10px',
+                  background: isActive ? 'var(--nm-accent-soft)' : 'var(--nm-shadow-dark)',
+                  color: isActive ? '#ffffff' : 'var(--nm-text-primary)',
+                  marginLeft: '4px',
+                  transition: 'background-color 0.2s ease'
                 }}
               >
                 {count}
