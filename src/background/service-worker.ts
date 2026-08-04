@@ -1,15 +1,55 @@
 import { TabTracker } from './tab-tracker';
 import { NotificationManager } from './notification-manager';
 import { LearningStore } from '../storage/learning-store';
+import { SettingsStore } from '../storage/settings-store';
 import { migrateStorageIfNeeded } from '../storage/migration';
 import { generateId } from '../utils/id';
 import { getParserForUrl } from '../parsers/registry';
 
 const tracker = new TabTracker();
 
-// Init & Migrations
+async function refreshDynamicScripts() {
+  const settings = await SettingsStore.get();
+  if (settings.captureOnAnySite) {
+    const manifest = chrome.runtime.getManifest();
+    const jsFile = manifest.content_scripts?.[0]?.js?.[0];
+    if (jsFile) {
+      try {
+        await chrome.scripting.unregisterContentScripts({ ids: ['generic-capture'] }).catch(() => {});
+        await chrome.scripting.registerContentScripts([{
+          id: 'generic-capture',
+          js: [jsFile],
+          matches: ['http://*/*', 'https://*/*'],
+          runAt: 'document_idle'
+        }]);
+        console.log('[SW] Dynamic content script registered.');
+      } catch (err) {
+        console.error('[SW] Failed to register dynamic content script:', err);
+      }
+    }
+  } else {
+    try {
+      await chrome.scripting.unregisterContentScripts({ ids: ['generic-capture'] }).catch(() => {});
+      console.log('[SW] Dynamic content script unregistered.');
+    } catch (err) {
+      console.error('[SW] Failed to unregister dynamic content script:', err);
+    }
+  }
+}
+
+async function runStartupJobs() {
+  await migrateStorageIfNeeded();
+  const settings = await SettingsStore.get();
+  if (settings.enableAutoArchive !== false && settings.autoArchiveDays > 0) {
+    await LearningStore.archiveOldCompletedItems(settings.autoArchiveDays);
+    console.log(`[SW] Auto-archived old completed items.`);
+  }
+  await refreshDynamicScripts();
+}
+
+// Startup jobs
 chrome.runtime.onInstalled.addListener(() => {
-  migrateStorageIfNeeded();
+  runStartupJobs();
 
   // Create context menu
   if (chrome.contextMenus) {
@@ -21,12 +61,18 @@ chrome.runtime.onInstalled.addListener(() => {
   }
 });
 
-// Handle content script messages
+// Run startup jobs when service worker starts
+runStartupJobs();
+
+// Handle content script messages & dynamic scripts settings refresh
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'LEARNING_PROGRESS_UPDATE') {
     const tabId = sender.tab?.id || 0;
     tracker.handleProgressUpdate(tabId, message, message.isFinal);
     sendResponse({ status: 'ok' });
+  } else if (message.type === 'REFRESH_DYNAMIC_SCRIPTS') {
+    refreshDynamicScripts().then(() => sendResponse({ status: 'ok' }));
+    return true; // Keep channel open for async response
   }
   return true;
 });
@@ -81,7 +127,8 @@ chrome.contextMenus?.onClicked.addListener((info, tab) => {
       readingProgress: 10,
       watchProgress: 0,
       status: 'unfinished',
-      metadata: mockData.metadata
+      metadata: mockData.metadata,
+      schemaVersion: 2
     });
   }
 });

@@ -47,18 +47,23 @@ export class LearningStore {
     const items = await this.getAll();
     const existingIndex = items.findIndex((existing) => existing.id === item.id || existing.url === item.url);
 
+    const itemToSave = {
+      ...item,
+      schemaVersion: 2,
+      lastSeen: Date.now()
+    };
+
     if (existingIndex >= 0) {
       items[existingIndex] = {
         ...items[existingIndex],
-        ...item,
-        lastSeen: Date.now()
+        ...itemToSave
       };
     } else {
-      items.unshift(item);
+      items.unshift(itemToSave);
     }
 
     await setStorageData(STORAGE_KEY, items);
-    return item;
+    return itemToSave;
   }
 
   static async updateStatus(id: string, status: LearningObject['status'], scheduledTime?: number): Promise<void> {
@@ -82,5 +87,29 @@ export class LearningStore {
     const items = await this.getAll();
     const activeOnly = items.filter((item) => item.status !== 'completed');
     await setStorageData(STORAGE_KEY, activeOnly);
+  }
+
+  static async clearAll(): Promise<void> {
+    await setStorageData(STORAGE_KEY, []);
+  }
+
+  static async archiveOldCompletedItems(autoArchiveDays: number): Promise<void> {
+    if (autoArchiveDays <= 0) return;
+    const items = await this.getAll();
+    const now = Date.now();
+    const thresholdTime = now - autoArchiveDays * 24 * 60 * 60 * 1000;
+    
+    let modified = false;
+    const updated = items.map((item) => {
+      if (item.status === 'completed' && item.lastSeen < thresholdTime) {
+        modified = true;
+        return { ...item, status: 'archived' as const, lastSeen: now };
+      }
+      return item;
+    });
+
+    if (modified) {
+      await setStorageData(STORAGE_KEY, updated);
+    }
   }
 }

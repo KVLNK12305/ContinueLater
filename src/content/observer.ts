@@ -25,6 +25,11 @@ export class PageObserver {
   private idleTimer: any = null;
   private idleTimeoutMs = 5 * 60 * 1000; // 5 minutes
 
+  // Active engagement variables
+  private activeTimeMs = 0;
+  private activeTimeInterval: any = null;
+  private onAutosaveCallbacks: Array<() => void> = [];
+
   constructor(idleMinutes = 5) {
     this.idleTimeoutMs = idleMinutes * 60 * 1000;
   }
@@ -33,12 +38,20 @@ export class PageObserver {
     this.initScrollTracking();
     this.initVideoTracking();
     this.initIdleTracking();
+    this.startActiveTimeTracking();
   }
 
   public subscribe(callback: ObserverCallback): () => void {
     this.callbacks.push(callback);
     return () => {
       this.callbacks = this.callbacks.filter((cb) => cb !== callback);
+    };
+  }
+
+  public onAutosave(callback: () => void): () => void {
+    this.onAutosaveCallbacks.push(callback);
+    return () => {
+      this.onAutosaveCallbacks = this.onAutosaveCallbacks.filter((cb) => cb !== callback);
     };
   }
 
@@ -49,6 +62,31 @@ export class PageObserver {
   private notify(): void {
     const currentState = this.getState();
     this.callbacks.forEach((cb) => cb(currentState));
+  }
+
+  private triggerAutosave(): void {
+    this.onAutosaveCallbacks.forEach((cb) => {
+      try {
+        cb();
+      } catch (e) {
+        console.error('[PageObserver] Error in autosave callback:', e);
+      }
+    });
+  }
+
+  private startActiveTimeTracking(): void {
+    if (this.activeTimeInterval) clearInterval(this.activeTimeInterval);
+    this.activeTimeInterval = setInterval(() => {
+      // User is active if not idle and the page is currently visible
+      const isVisible = typeof document !== 'undefined' ? document.visibilityState === 'visible' : true;
+      if (!this.state.isIdle && isVisible) {
+        this.activeTimeMs += 1000;
+        if (this.activeTimeMs >= 20000) { // 20s threshold for autosave
+          this.activeTimeMs = 0;
+          this.triggerAutosave();
+        }
+      }
+    }, 1000);
   }
 
   private initScrollTracking(): void {
@@ -138,5 +176,8 @@ export class PageObserver {
       element.removeEventListener(event, fn);
     });
     if (this.idleTimer) clearTimeout(this.idleTimer);
+    if (this.activeTimeInterval) {
+      clearInterval(this.activeTimeInterval);
+    }
   }
 }

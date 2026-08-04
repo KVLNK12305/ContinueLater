@@ -11,7 +11,7 @@ export function useLearningItems() {
     setLoading(true);
     try {
       const data = await LearningStore.getAll();
-      setItems(data);
+      setItems(data.filter((item) => item.status !== 'archived'));
     } finally {
       setLoading(false);
     }

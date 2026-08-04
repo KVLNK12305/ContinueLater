@@ -1,13 +1,18 @@
 import { LearningSource } from '../parsers/types';
 
+export function meetsEngagementThreshold(
+  timeSpentSeconds: number,
+  completionPercent: number
+): boolean {
+  return timeSpentSeconds >= 20 && completionPercent >= 5;
+}
+
 export function isSessionUnfinished(
   completionPercent: number,
   parser: LearningSource,
   customThreshold?: number
 ): boolean {
   const threshold = customThreshold !== undefined ? customThreshold : parser.getCompletionThreshold();
-
-  // If completion percentage is below threshold and user started learning (> 2% progress or > 10 seconds spent)
   return completionPercent < threshold;
 }
 

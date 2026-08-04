@@ -1,14 +1,20 @@
 import { LearningObject } from '../types/learning-object';
 import { formatRemainingTime } from './time';
 
+function truncate(str: string, maxLength: number): string {
+  if (str.length <= maxLength) return str;
+  return str.slice(0, maxLength - 3) + '...';
+}
+
 /**
  * Generates a Google Calendar event creation URL (Zero API cost)
  */
 export function generateGoogleCalendarUrl(item: LearningObject, durationMinutes = 30): string {
-  const title = `Continue: ${item.title}`;
+  const truncatedTitle = truncate(item.title, 120);
+  const title = `Continue: ${truncatedTitle}`;
 
   const remainingStr = formatRemainingTime(item.estimatedRemainingMinutes);
-  const details = `Never lose your learning flow.
+  const detailsRaw = `Never lose your learning flow.
 
 Resume session: ${item.url}
 Source: ${item.source.toUpperCase()}
@@ -17,6 +23,8 @@ Remaining time: ${remainingStr}
 
 Subtitle: ${item.subtitle}
 Captured via ContinueLater Chrome Extension.`;
+
+  const details = truncate(detailsRaw, 1000);
 
   // Default event start time: Tomorrow at 9:00 AM
   const startDate = new Date();

@@ -1,4 +1,4 @@
-import { ScheduleOption, SourceType } from './enums';
+import { ScheduleOption } from './enums';
 
 export interface ThresholdConfig {
   youtube: number; // e.g. 90%
@@ -17,6 +17,10 @@ export interface UserSettings {
   enableNotifications: boolean;
   enableSound: boolean;
   weeklyGoalHours: number;
+  // New configuration properties
+  autoArchiveDays: number; // e.g. 7 days
+  enableAutoArchive: boolean;
+  captureOnAnySite: boolean;
 }
 
 export const DEFAULT_SETTINGS: UserSettings = {
@@ -33,5 +37,8 @@ export const DEFAULT_SETTINGS: UserSettings = {
   theme: 'system',
   enableNotifications: true,
   enableSound: false,
-  weeklyGoalHours: 10
+  weeklyGoalHours: 10,
+  autoArchiveDays: 7,
+  enableAutoArchive: true,
+  captureOnAnySite: false
 };

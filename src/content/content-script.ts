@@ -41,17 +41,16 @@ import { generateId } from '../utils/id';
     }
   }
 
-  // Throttle updates: send every 3 seconds
-  let updateInterval: any = setInterval(() => {
-    sendProgressToBackground(false);
-  }, 3000);
-
   // Send initial parse snapshot after DOM loads
   setTimeout(() => sendProgressToBackground(false), 1000);
 
+  // Periodic autosave from observer (every 20s of active engagement)
+  observer.onAutosave(() => {
+    sendProgressToBackground(false);
+  });
+
   // Final update on page unload / navigate away
   const handleUnload = () => {
-    if (updateInterval) clearInterval(updateInterval);
     sendProgressToBackground(true);
     observer.stop();
   };

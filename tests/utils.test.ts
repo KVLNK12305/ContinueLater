@@ -24,7 +24,8 @@ describe('Utility Functions', () => {
     readingProgress: 0,
     watchProgress: 30,
     status: 'unfinished',
-    metadata: { channel: 'FreeCodeCamp' }
+    metadata: { channel: 'FreeCodeCamp' },
+    schemaVersion: 2
   };
 
   it('formats remaining time correctly', () => {

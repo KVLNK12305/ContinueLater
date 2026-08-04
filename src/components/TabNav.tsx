@@ -18,15 +18,16 @@ export const TabNav: React.FC<TabNavProps> = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <div style={{ padding: '4px 10px 10px 10px' }}>
+    <div style={{ padding: '4px 10px 10px 10px', background: 'var(--nm-bg)' }}>
       <nav
-        className="painted-card"
+        className="nm-card"
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-around',
           padding: '6px 8px',
-          zIndex: 100
+          zIndex: 100,
+          borderRadius: 'var(--nm-radius-lg)'
         }}
       >
         {tabs.map((tab) => {
@@ -36,28 +37,30 @@ export const TabNav: React.FC<TabNavProps> = ({ activeTab, onTabChange }) => {
             <button
               key={tab.key}
               onClick={() => onTabChange(tab.key)}
-              className="painted-interactive"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '8px 16px',
-                borderRadius: 'var(--radius-lg)',
-                color: isActive ? 'var(--md-sys-color-primary)' : 'var(--md-sys-color-on-surface-variant)',
-                background: isActive ? 'rgba(252, 217, 85, 0.1)' : 'transparent',
-                boxShadow: isActive ? 'var(--shadow-impasto-base)' : 'none',
+                padding: '6px 12px',
+                borderRadius: 'var(--nm-radius-md)',
+                color: isActive ? 'var(--nm-accent)' : 'var(--nm-text-secondary)',
+                background: 'transparent',
+                boxShadow: isActive 
+                  ? 'inset 2.5px 2.5px 5px var(--nm-shadow-dark), inset -2.5px -2.5px 5px var(--nm-shadow-light)'
+                  : 'none',
+                transition: 'all 0.2s ease',
+                border: 'none',
+                cursor: 'pointer'
               }}
             >
-              <div style={{ 
-                filter: isActive ? 'drop-shadow(0 0 6px var(--color-moon-glow))' : 'none'
-              }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 {tab.icon}
               </div>
-              <span className="display-font" style={{ 
-                fontSize: '11px', 
+              <span style={{ 
+                fontSize: '10px', 
                 fontWeight: isActive ? 700 : 500,
-                color: isActive ? 'var(--md-sys-color-primary)' : 'inherit'
+                color: isActive ? 'var(--nm-accent)' : 'inherit'
               }}>
                 {tab.label}
               </span>
@@ -68,3 +71,4 @@ export const TabNav: React.FC<TabNavProps> = ({ activeTab, onTabChange }) => {
     </div>
   );
 };
+export default TabNav;

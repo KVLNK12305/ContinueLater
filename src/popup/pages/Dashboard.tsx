@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLearningItems } from '../../hooks/useLearningItems';
 import { useStats } from '../../hooks/useStats';
 import { filterAndSearchLearningItems } from '../../utils/search';
@@ -16,6 +16,15 @@ export const Dashboard: React.FC = () => {
 
   const [category, setCategory] = useState<FilterCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+
+  // Debounce search query input to prevent jank
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 150);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   // Unfinished items only for main dashboard
   const unfinishedItems = useMemo(() => {
@@ -26,9 +35,9 @@ export const Dashboard: React.FC = () => {
     return filterAndSearchLearningItems(unfinishedItems, {
       ...DEFAULT_FILTERS,
       category,
-      searchQuery
+      searchQuery: debouncedSearchQuery
     });
-  }, [unfinishedItems, category, searchQuery]);
+  }, [unfinishedItems, category, debouncedSearchQuery]);
 
   // Compute category counts
   const categoryCounts = useMemo(() => {
@@ -51,11 +60,10 @@ export const Dashboard: React.FC = () => {
       {/* Top Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '2px 4px 4px 4px' }}>
         <div>
-          <h2 className="display-font" style={{ fontSize: '20px', fontWeight: 800 }}>
-            <span style={{ color: 'var(--md-sys-color-on-surface)' }}>Continue</span>
-            <span className="painted-text-accent">Later</span>
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--nm-text-primary)' }}>
+            Continue<span style={{ color: 'var(--nm-accent)' }}>Later</span>
           </h2>
-          <p style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', fontWeight: 500, fontStyle: 'italic' }}>
+          <p style={{ fontSize: '11px', color: 'var(--nm-text-secondary)', fontWeight: 500, fontStyle: 'italic', marginTop: '2px' }}>
             Never lose your learning flow.
           </p>
         </div>
@@ -75,7 +83,7 @@ export const Dashboard: React.FC = () => {
       {/* Main List Area */}
       <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingRight: '2px' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '24px', color: 'var(--md-sys-color-on-surface-variant)', fontSize: '12px', fontStyle: 'italic' }}>
+          <div style={{ textAlign: 'center', padding: '24px', color: 'var(--nm-text-secondary)', fontSize: '12px', fontStyle: 'italic' }}>
             Preparing your canvas...
           </div>
         ) : filteredItems.length > 0 ? (
@@ -91,7 +99,7 @@ export const Dashboard: React.FC = () => {
           ))
         ) : (
           <EmptyState
-            icon={searchQuery ? <Search size={32} color="#2a2212" /> : <CheckCircle2 size={32} color="#2a2212" />}
+            icon={searchQuery ? <Search size={28} color="var(--nm-accent)" /> : <CheckCircle2 size={28} color="var(--nm-accent)" />}
             title={searchQuery ? 'No matching learning sessions' : 'All caught up!'}
             description={
               searchQuery

@@ -46,4 +46,5 @@ export interface LearningObject {
   status: LearningStatus;
   scheduledTime?: number; // Epoch timestamp for smart reminders
   metadata: SourceMetadata;
+  schemaVersion: number;
 }

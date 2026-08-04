@@ -26,7 +26,8 @@ export type LearningStatus =
   | 'unfinished'
   | 'completed'
   | 'dismissed'
-  | 'snoozed';
+  | 'snoozed'
+  | 'archived';
 
 export type ScheduleOption =
   | 'tomorrow'
