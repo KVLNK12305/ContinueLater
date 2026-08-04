@@ -73,9 +73,7 @@
   --nm-radius-lg: 24px;
 }
 
-:root[data-theme="system"] {
-  /* Inherit default system colors */
-}
+
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
     --nm-bg: #1e2128;
