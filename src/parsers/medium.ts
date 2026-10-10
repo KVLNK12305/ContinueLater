@@ -5,7 +5,10 @@ export const MediumParser: LearningSource = {
   urlPatterns: [/^https:\/\/(www\.)?medium\.com\//, /^https:\/\/[a-zA-Z0-9-]+\.medium\.com\//],
 
   detect(url: string): boolean {
-    return this.urlPatterns.some((pattern) => pattern.test(url)) || document.querySelector('meta[property="al:ios:app_name"][content="Medium"]') !== null;
+    return (
+      this.urlPatterns.some((pattern) => pattern.test(url)) ||
+      (typeof document !== 'undefined' && document.querySelector('meta[property="al:ios:app_name"][content="Medium"]') !== null)
+    );
   },
 
   parse(doc: Document, url: string, extraData?: Record<string, any>): ExtractedLearningData {

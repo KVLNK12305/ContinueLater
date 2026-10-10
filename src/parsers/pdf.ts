@@ -5,7 +5,10 @@ export const PdfParser: LearningSource = {
   urlPatterns: [/\.pdf($|\?)/i, /^file:\/\/.*\.pdf/i],
 
   detect(url: string): boolean {
-    return this.urlPatterns.some((pattern) => pattern.test(url)) || document.contentType === 'application/pdf';
+    return (
+      this.urlPatterns.some((pattern) => pattern.test(url)) ||
+      (typeof document !== 'undefined' && document.contentType === 'application/pdf')
+    );
   },
 
   parse(doc: Document, url: string, extraData?: Record<string, any>): ExtractedLearningData {

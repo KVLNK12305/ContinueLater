@@ -4,6 +4,7 @@ import { LearningStore } from '../storage/learning-store';
 import { SettingsStore } from '../storage/settings-store';
 import { migrateStorageIfNeeded } from '../storage/migration';
 import { generateId } from '../utils/id';
+import { safeUrlId } from '../utils/resume';
 import { getParserForUrl } from '../parsers/registry';
 
 const tracker = new TabTracker();
@@ -73,6 +74,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.type === 'REFRESH_DYNAMIC_SCRIPTS') {
     refreshDynamicScripts().then(() => sendResponse({ status: 'ok' }));
     return true; // Keep channel open for async response
+  } else if (message.type === 'GET_SESSION_RESUME_INFO') {
+    LearningStore.getByUrl(message.url).then((item) => {
+      sendResponse({ item: item && item.status !== 'completed' ? item : null });
+    });
+    return true;
+  } else if (message.type === 'CAPTURE_CURRENT_TAB') {
+    chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
+      const activeTab = tabs[0];
+      if (activeTab) {
+        saveTabSafely(activeTab).then(() => {
+          sendResponse({ status: 'ok', tab: activeTab });
+        });
+      } else {
+        sendResponse({ status: 'error', message: 'No active tab found' });
+      }
+    });
+    return true;
   }
   return true;
 });
@@ -103,39 +121,61 @@ chrome.notifications.onClicked.addListener((notificationId) => {
   NotificationManager.handleNotificationClicked(notificationId);
 });
 
-// Handle Context Menu click
-chrome.contextMenus?.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === 'save-continue-later' && tab?.url) {
+async function saveTabSafely(tab: chrome.tabs.Tab) {
+  if (!tab.id || !tab.url) return;
+
+  try {
+    const response = await chrome.tabs.sendMessage(tab.id, { type: 'MANUAL_CAPTURE_REQUEST' }).catch(() => null);
+    if (response?.status === 'ok') return;
+  } catch {
+    // Content script not ready or unavailable
+  }
+
+  try {
     const parser = getParserForUrl(tab.url);
-    const mockData = parser.parse(document as any, tab.url, { scrollPercent: 10 });
-    
-    LearningStore.save({
-      id: generateId(),
-      type: mockData.type,
-      title: tab.title || mockData.title,
-      subtitle: mockData.subtitle,
+    const hostname = new URL(tab.url).hostname.replace('www.', '');
+    const title = tab.title || 'Learning Webpage';
+
+    await LearningStore.save({
+      id: safeUrlId(tab.url),
+      type: parser.name === 'youtube' ? 'watching' : 'reading',
+      title,
+      subtitle: hostname,
       url: tab.url,
-      thumbnail: mockData.thumbnail,
-      resumePoint: { scrollPercent: 10 },
-      completionPercent: 10,
-      estimatedRemainingMinutes: mockData.estimatedRemainingMinutes,
+      thumbnail: '',
+      resumePoint: { scrollPercent: 0 },
+      completionPercent: 0,
+      estimatedRemainingMinutes: 10,
       firstSeen: Date.now(),
       lastSeen: Date.now(),
-      source: mockData.source,
-      tags: mockData.tags,
-      favicon: tab.favIconUrl || mockData.favicon,
-      readingProgress: 10,
+      source: parser.name,
+      tags: [hostname, 'Learning'].filter(Boolean),
+      favicon: tab.favIconUrl || `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`,
+      readingProgress: 0,
       watchProgress: 0,
       status: 'unfinished',
-      metadata: mockData.metadata,
+      metadata: { headline: title },
       schemaVersion: 2
     });
+  } catch (err) {
+    console.error('[SW] Failed to save tab safely:', err);
+  }
+}
+
+// Handle Context Menu click
+chrome.contextMenus?.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === 'save-continue-later' && tab) {
+    saveTabSafely(tab);
   }
 });
 
 // Handle Keyboard Shortcuts (Ctrl+Shift+L)
 chrome.commands?.onCommand.addListener((command) => {
   if (command === 'open-dashboard') {
-    chrome.action.openPopup();
+    try {
+      chrome.action.openPopup().catch(() => {});
+    } catch {
+      // openPopup requires Chrome 99+ or user interaction
+    }
   }
 });

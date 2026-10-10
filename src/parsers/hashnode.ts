@@ -5,7 +5,10 @@ export const HashnodeParser: LearningSource = {
   urlPatterns: [/^https:\/\/[a-zA-Z0-9-]+\.hashnode\.(dev|com)\/[a-zA-Z0-9-]+/],
 
   detect(url: string): boolean {
-    return this.urlPatterns.some((pattern) => pattern.test(url)) || document.querySelector('meta[property="og:site_name"][content*="Hashnode"]') !== null;
+    return (
+      this.urlPatterns.some((pattern) => pattern.test(url)) ||
+      (typeof document !== 'undefined' && document.querySelector('meta[property="og:site_name"][content*="Hashnode"]') !== null)
+    );
   },
 
   parse(doc: Document, url: string, extraData?: Record<string, any>): ExtractedLearningData {

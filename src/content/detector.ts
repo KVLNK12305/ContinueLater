@@ -4,7 +4,12 @@ export function meetsEngagementThreshold(
   timeSpentSeconds: number,
   completionPercent: number
 ): boolean {
-  return timeSpentSeconds >= 20 && completionPercent >= 5;
+  // Engaged if user spent >= 15s active time OR progressed >= 5% OR spent >= 5s with some scroll progress
+  return (
+    timeSpentSeconds >= 15 ||
+    completionPercent >= 5 ||
+    (timeSpentSeconds >= 5 && completionPercent >= 2)
+  );
 }
 
 export function isSessionUnfinished(

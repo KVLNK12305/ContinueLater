@@ -3,6 +3,7 @@ import { StatsStore } from '../storage/stats-store';
 import { LearningObject } from '../types/learning-object';
 import { getParserForUrl } from '../parsers/registry';
 import { isSessionCompleted, meetsEngagementThreshold } from '../content/detector';
+import { safeUrlId } from '../utils/resume';
 
 const COOLDOWNS_KEY = 'continue_later_url_cooldowns';
 const COOLDOWN_MS = 30 * 60 * 1000; // 30-minute cooldown window
@@ -40,10 +41,11 @@ export class TabTracker {
 
     const data = updateData.data;
     const parser = getParserForUrl(data.url);
-    const timeSpent = updateData.data.timeSpent || updateData.timeSpent || 0;
+    const timeSpent = updateData.timeSpent || updateData.data.timeSpent || 0;
     const progress = data.completionPercent || 0;
+    const isManual = !!updateData.isManual;
 
-    const isEngaged = meetsEngagementThreshold(timeSpent, progress);
+    const isEngaged = isManual || meetsEngagementThreshold(timeSpent, progress);
 
     LearningStore.getByUrl(data.url).then(async (existing) => {
       // 1. False-positive session capture: Discard silently if below threshold and doesn't already exist
@@ -51,7 +53,7 @@ export class TabTracker {
         return;
       }
 
-      const itemId = `item_${btoa(data.url).substring(0, 32).replace(/[^a-zA-Z0-9]/g, '')}`;
+      const itemId = safeUrlId(data.url);
       const now = Date.now();
       const firstSeen = existing ? existing.firstSeen : now;
       const status: LearningObject['status'] = isSessionCompleted(data.completionPercent, parser)
