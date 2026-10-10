@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { LearningObject } from '../types/learning-object';
 import { LearningStore } from '../storage/learning-store';
 import { StatsStore } from '../storage/stats-store';
+import { buildResumeUrl } from '../utils/resume';
 
 export function useLearningItems() {
   const [items, setItems] = useState<LearningObject[]>([]);
@@ -29,10 +30,11 @@ export function useLearningItems() {
   }, [refreshItems]);
 
   const resumeItem = useCallback(async (item: LearningObject) => {
+    const resumeUrl = buildResumeUrl(item);
     if (typeof chrome !== 'undefined' && chrome.tabs) {
-      chrome.tabs.create({ url: item.url });
+      chrome.tabs.create({ url: resumeUrl });
     } else {
-      window.open(item.url, '_blank');
+      window.open(resumeUrl, '_blank');
     }
     await StatsStore.recordActivity('recover', 0, item.tags?.[0] || '');
     await LearningStore.updateStatus(item.id, 'active');
@@ -50,12 +52,25 @@ export function useLearningItems() {
     await refreshItems();
   }, [refreshItems]);
 
+  const captureCurrentTab = useCallback(async (): Promise<boolean> => {
+    if (typeof chrome !== 'undefined' && chrome.runtime?.sendMessage) {
+      return new Promise((resolve) => {
+        chrome.runtime.sendMessage({ type: 'CAPTURE_CURRENT_TAB' }, async (res) => {
+          await refreshItems();
+          resolve(res?.status === 'ok');
+        });
+      });
+    }
+    return false;
+  }, [refreshItems]);
+
   return {
     items,
     loading,
     refreshItems,
     resumeItem,
     deleteItem,
-    markCompleted
+    markCompleted,
+    captureCurrentTab
   };
 }

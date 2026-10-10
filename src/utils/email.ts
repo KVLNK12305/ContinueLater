@@ -1,5 +1,6 @@
 import { LearningObject } from '../types/learning-object';
 import { formatRemainingTime } from './time';
+import { buildResumeUrl } from './resume';
 
 /**
  * Generates a pre-filled mailto: compose link (Zero API cost)
@@ -8,13 +9,14 @@ export function generateMailtoUrl(item: LearningObject): string {
   const subject = `Continue learning: ${item.title}`;
 
   const remainingStr = formatRemainingTime(item.estimatedRemainingMinutes);
+  const resumeUrl = buildResumeUrl(item);
   const body = `Hi there!
 
 You recently paused your learning session on:
 ${item.title} (${item.subtitle})
 
 Resume directly here:
-${item.url}
+${resumeUrl}
 
 Progress: ${item.completionPercent}% completed
 Estimated time remaining: ${remainingStr}

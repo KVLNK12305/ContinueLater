@@ -35,19 +35,9 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.google.com/search*",
-        "https://www.youtube.com/watch*",
-        "https://*.substack.com/*",
-        "https://medium.com/*",
-        "https://*.medium.com/*",
-        "https://github.com/*",
-        "https://dev.to/*",
-        "https://hashnode.com/*",
-        "https://*.hashnode.dev/*",
-        "https://*.wikipedia.org/wiki/*",
-        "https://docs.google.com/document/*",
-        "file://*/*.pdf",
-        "https://*/*.pdf"
+        "http://*/*",
+        "https://*/*",
+        "file://*/*"
       ],
       "js": ["src/content/content-script.ts"],
       "run_at": "document_idle"

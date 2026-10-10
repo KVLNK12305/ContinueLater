@@ -1,5 +1,6 @@
 import { LearningObject } from '../types/learning-object';
 import { formatRemainingTime } from './time';
+import { buildResumeUrl } from './resume';
 
 function truncate(str: string, maxLength: number): string {
   if (str.length <= maxLength) return str;
@@ -13,10 +14,11 @@ export function generateGoogleCalendarUrl(item: LearningObject, durationMinutes 
   const truncatedTitle = truncate(item.title, 120);
   const title = `Continue: ${truncatedTitle}`;
 
+  const resumeUrl = buildResumeUrl(item);
   const remainingStr = formatRemainingTime(item.estimatedRemainingMinutes);
   const detailsRaw = `Never lose your learning flow.
 
-Resume session: ${item.url}
+Resume session: ${resumeUrl}
 Source: ${item.source.toUpperCase()}
 Progress: ${item.completionPercent}% completed
 Remaining time: ${remainingStr}
