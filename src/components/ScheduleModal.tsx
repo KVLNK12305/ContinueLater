@@ -164,10 +164,15 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
           </button>
           <button
             onClick={handleSave}
-            className="nm-btn nm-btn-primary"
-            style={{ padding: '6px 14px', fontSize: '12px' }}
+            className={`nm-btn ${selectedOption === 'never' ? 'nm-btn-secondary' : 'nm-btn-primary'}`}
+            style={{
+              padding: '6px 14px',
+              fontSize: '12px',
+              color: selectedOption === 'never' ? 'var(--nm-danger)' : undefined,
+              borderColor: selectedOption === 'never' ? 'var(--nm-danger)' : undefined
+            }}
           >
-            Set Reminder
+            {selectedOption === 'never' ? 'Clear Reminder' : 'Set Reminder'}
           </button>
         </div>
       </div>

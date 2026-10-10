@@ -4,6 +4,11 @@ import { LearningStore } from '../storage/learning-store';
 
 export class AlarmManager {
   public static async scheduleReminder(itemId: string, schedule: ScheduleOption, customDate?: Date): Promise<void> {
+    if (schedule === 'never') {
+      await this.cancelReminder(itemId);
+      return;
+    }
+
     const timestamp = calculateScheduleTimestamp(schedule, customDate);
     if (!timestamp) return;
 
@@ -28,5 +33,6 @@ export class AlarmManager {
     if (typeof chrome !== 'undefined' && chrome.alarms) {
       await chrome.alarms.clear(alarmName);
     }
+    await LearningStore.updateStatus(itemId, 'unfinished', undefined);
   }
 }

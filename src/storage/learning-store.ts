@@ -13,8 +13,15 @@ async function getStorageData<T>(key: string, defaultValue: T): Promise<T> {
       });
     });
   }
-  const raw = localStorage.getItem(key);
-  return raw ? JSON.parse(raw) : defaultValue;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : defaultValue;
+    }
+  } catch {
+    // Ignore storage errors in restricted test environments
+  }
+  return defaultValue;
 }
 
 async function setStorageData<T>(key: string, value: T): Promise<void> {
@@ -23,7 +30,13 @@ async function setStorageData<T>(key: string, value: T): Promise<void> {
       chrome.storage.local.set({ [key]: value }, () => resolve());
     });
   }
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+  } catch {
+    // Ignore storage errors in restricted test environments
+  }
 }
 
 export class LearningStore {
@@ -71,7 +84,11 @@ export class LearningStore {
     const item = items.find((i) => i.id === id);
     if (item) {
       item.status = status;
-      if (scheduledTime) item.scheduledTime = scheduledTime;
+      if (scheduledTime !== undefined) {
+        item.scheduledTime = scheduledTime;
+      } else if (status !== 'snoozed') {
+        delete item.scheduledTime;
+      }
       item.lastSeen = Date.now();
       await setStorageData(STORAGE_KEY, items);
     }
