@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { LearningStore } from '../../storage/learning-store';
-import { Sun, Download, Upload, Keyboard, ShieldAlert, Settings, Archive } from 'lucide-react';
+import { generateMarkdownDigest } from '../../utils/resume';
+import { Sun, Download, Upload, Keyboard, ShieldAlert, Settings, Archive, FileText } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { settings, updateSettings } = useSettings();
@@ -44,6 +45,17 @@ export const SettingsPage: React.FC = () => {
     const a = document.createElement('a');
     a.href = url;
     a.download = `continue-later-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+  };
+
+  const handleExportMarkdown = async () => {
+    const items = await LearningStore.getAll();
+    const md = generateMarkdownDigest(items);
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `continue-later-digest-${new Date().toISOString().split('T')[0]}.md`;
     a.click();
   };
 
@@ -337,10 +349,13 @@ export const SettingsPage: React.FC = () => {
         <h3 style={sectionTitleStyle}>Data Export & Import</h3>
         <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
           <button onClick={handleExport} className="nm-btn nm-btn-secondary" style={{ flex: 1, padding: '8px' }}>
-            <Download size={13} /> Export Backup
+            <Download size={13} /> JSON Backup
+          </button>
+          <button onClick={handleExportMarkdown} className="nm-btn nm-btn-secondary" style={{ flex: 1, padding: '8px' }}>
+            <FileText size={13} /> Markdown Digest
           </button>
           <label className="nm-btn nm-btn-secondary" style={{ flex: 1, cursor: 'pointer', padding: '8px' }}>
-            <Upload size={13} /> Import Backup
+            <Upload size={13} /> Import
             <input type="file" accept=".json" onChange={handleImport} style={{ display: 'none' }} />
           </label>
         </div>

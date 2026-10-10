@@ -32,7 +32,11 @@ export const LearningCard: React.FC<LearningCardProps> = ({
         className="animate-fade-in nm-card nm-card-interactive" 
         style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
       >
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+        <div 
+          onClick={() => onResume(item)}
+          style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', cursor: 'pointer' }}
+          title="Click to resume session"
+        >
           {/* Thumbnail / Source Icon Frame */}
           <div
             style={{

@@ -8,15 +8,27 @@ import { FilterBar } from '../../components/FilterBar';
 import { SearchBar } from '../../components/SearchBar';
 import { StreakDisplay } from '../../components/StreakDisplay';
 import { EmptyState } from '../../components/EmptyState';
-import { Search, CheckCircle2 } from 'lucide-react';
+import { Search, CheckCircle2, BookmarkPlus, Check } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
-  const { items, loading, resumeItem, deleteItem, markCompleted, refreshItems } = useLearningItems();
+  const { items, loading, resumeItem, deleteItem, markCompleted, refreshItems, captureCurrentTab } = useLearningItems();
   const { stats } = useStats();
 
   const [category, setCategory] = useState<FilterCategory>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [capturing, setCapturing] = useState(false);
+  const [capturedSuccess, setCapturedSuccess] = useState(false);
+
+  const handleCaptureCurrentTab = async () => {
+    setCapturing(true);
+    const success = await captureCurrentTab();
+    setCapturing(false);
+    if (success) {
+      setCapturedSuccess(true);
+      setTimeout(() => setCapturedSuccess(false), 2000);
+    }
+  };
 
   // Debounce search query input to prevent jank
   useEffect(() => {
@@ -70,8 +82,35 @@ export const Dashboard: React.FC = () => {
         <StreakDisplay streak={stats.currentStreak} xp={stats.xp} level={stats.level} />
       </div>
 
-      {/* Search Bar */}
-      <SearchBar value={searchQuery} onChange={setSearchQuery} />
+      {/* Search Bar & Quick Capture Button */}
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        </div>
+        <button
+          onClick={handleCaptureCurrentTab}
+          disabled={capturing}
+          className="nm-btn nm-btn-primary"
+          style={{
+            fontSize: '11px',
+            padding: '8px 12px',
+            gap: '6px',
+            whiteSpace: 'nowrap',
+            flexShrink: 0
+          }}
+          title="Save active tab right now"
+        >
+          {capturedSuccess ? (
+            <>
+              <Check size={13} color="var(--nm-success)" /> Saved!
+            </>
+          ) : (
+            <>
+              <BookmarkPlus size={13} /> {capturing ? 'Saving...' : 'Save Tab'}
+            </>
+          )}
+        </button>
+      </div>
 
       {/* Filter Chips */}
       <FilterBar
