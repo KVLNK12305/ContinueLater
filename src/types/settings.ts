@@ -13,7 +13,7 @@ export interface UserSettings {
   defaultReminderSchedule: ScheduleOption;
   idleTimeoutMinutes: number; // X minutes of inactivity
   thresholds: ThresholdConfig;
-  theme: 'light' | 'dark' | 'system';
+  theme: 'retro' | 'light' | 'dark' | 'system';
   enableNotifications: boolean;
   enableSound: boolean;
   weeklyGoalHours: number;
@@ -34,7 +34,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
     doc: 95,
     default: 90
   },
-  theme: 'system',
+  theme: 'retro',
   enableNotifications: true,
   enableSound: false,
   weeklyGoalHours: 10,

@@ -72,4 +72,26 @@ describe('Aesthetics Contrast Validation (WCAG AA)', () => {
     console.log(`Dark Mode Contrast (${darkBg} vs ${darkText}): ${darkContrast.toFixed(2)}:1`);
     expect(darkContrast).toBeGreaterThanOrEqual(4.5);
   });
+
+  it('verifies retro theme palette contrast matches WCAG AA (>= 4.5:1)', () => {
+    const tokensPath = path.resolve(__dirname, '../src/styles/tokens.css');
+    const cssContent = fs.readFileSync(tokensPath, 'utf8');
+
+    const retroBlock = cssContent.match(/:root\[data-theme="retro"\]\s*\{([^}]+)\}/);
+    expect(retroBlock).not.toBeNull();
+    const bgMatch = retroBlock![1].match(/--nm-bg:\s*(#[a-fA-F0-9]+)/);
+    const textMatch = retroBlock![1].match(/--nm-text-primary:\s*(#[a-fA-F0-9]+)/);
+
+    expect(bgMatch).not.toBeNull();
+    expect(textMatch).not.toBeNull();
+    expect(bgMatch![1].toUpperCase()).toBe('#F5EBDD');
+    expect(textMatch![1].toUpperCase()).toBe('#413333');
+
+    const bgLum = hexToLuminance(bgMatch![1]);
+    const textLum = hexToLuminance(textMatch![1]);
+    const contrast = calculateContrast(bgLum, textLum);
+
+    console.log(`Retro Theme Contrast (${bgMatch![1]} vs ${textMatch![1]}): ${contrast.toFixed(2)}:1`);
+    expect(contrast).toBeGreaterThanOrEqual(4.5);
+  });
 });

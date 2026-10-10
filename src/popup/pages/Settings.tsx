@@ -186,7 +186,7 @@ export const SettingsPage: React.FC = () => {
           <Sun size={14} color="var(--nm-accent)" /> Theme & Aesthetics
         </h3>
         <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
-          {(['dark', 'light', 'system'] as const).map((t) => (
+          {(['retro', 'light', 'dark', 'system'] as const).map((t) => (
             <button
               key={t}
               onClick={() => updateSettings({ theme: t })}
