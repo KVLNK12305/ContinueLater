@@ -2,7 +2,7 @@
   "name": "continue-later",
   "private": true,
   "version": "1.0.0",
-  "description": "Never lose your learning flow. Production-grade Chrome Extension for learning continuity.",
+  "description": "A fun Chrome extension to keep track of unfinished learning rabbit holes.",
   "type": "module",
   "scripts": {
     "dev": "vite",
