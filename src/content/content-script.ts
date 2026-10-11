@@ -256,17 +256,22 @@ import { generateId } from '../utils/id';
   // SPA navigation observation
   window.addEventListener('popstate', handleUrlChange);
 
-  const origPushState = history.pushState;
-  history.pushState = function (...args) {
-    origPushState.apply(this, args);
-    setTimeout(handleUrlChange, 150);
-  };
+  try {
+    const origPushState = history.pushState;
+    history.pushState = function (...args) {
+      origPushState.apply(this, args);
+      setTimeout(handleUrlChange, 150);
+    };
 
-  const origReplaceState = history.replaceState;
-  history.replaceState = function (...args) {
-    origReplaceState.apply(this, args);
-    setTimeout(handleUrlChange, 150);
-  };
+    const origReplaceState = history.replaceState;
+    history.replaceState = function (...args) {
+      origReplaceState.apply(this, args);
+      setTimeout(handleUrlChange, 150);
+    };
+  } catch {
+    // In restricted sandbox environments where history prototype cannot be hooked,
+    // setInterval fallback below ensures SPA navigation is still tracked.
+  }
 
   setInterval(handleUrlChange, 2000);
 

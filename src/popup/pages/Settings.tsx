@@ -12,10 +12,19 @@ export const SettingsPage: React.FC = () => {
   // Fetch current storage usage and keyboard shortcut
   const loadStats = () => {
     if (typeof chrome !== 'undefined' && chrome.storage?.local) {
-      chrome.storage.local.getBytesInUse(null, (bytes) => {
-        const quota = 10485760; // 10MB quota ceiling
-        setStorageUsage({ bytes, percent: Math.round((bytes / quota) * 100) });
-      });
+      if (typeof chrome.storage.local.getBytesInUse === 'function') {
+        chrome.storage.local.getBytesInUse(null, (bytes) => {
+          const quota = 10485760; // 10MB quota ceiling
+          setStorageUsage({ bytes: bytes || 0, percent: Math.round(((bytes || 0) / quota) * 100) });
+        });
+      } else {
+        // Fallback for Firefox or browsers where getBytesInUse is unavailable
+        chrome.storage.local.get(null, (items) => {
+          const bytes = new Blob([JSON.stringify(items || {})]).size;
+          const quota = 10485760;
+          setStorageUsage({ bytes, percent: Math.round((bytes / quota) * 100) });
+        });
+      }
 
       if (chrome.commands?.getAll) {
         chrome.commands.getAll((commands) => {
@@ -140,10 +149,11 @@ export const SettingsPage: React.FC = () => {
   };
 
   const handleOpenShortcuts = () => {
+    const isFirefox = typeof navigator !== 'undefined' && /firefox|fxios/i.test(navigator.userAgent);
     if (typeof chrome !== 'undefined' && chrome.tabs) {
-      chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+      chrome.tabs.create({ url: isFirefox ? 'about:addons' : 'chrome://extensions/shortcuts' });
     } else {
-      alert('Open chrome://extensions/shortcuts directly in your browser.');
+      alert(isFirefox ? 'Open about:addons directly in your browser.' : 'Open chrome://extensions/shortcuts directly in your browser.');
     }
   };
 

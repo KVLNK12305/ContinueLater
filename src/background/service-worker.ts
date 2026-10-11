@@ -173,9 +173,11 @@ chrome.contextMenus?.onClicked.addListener((info, tab) => {
 chrome.commands?.onCommand.addListener((command) => {
   if (command === 'open-dashboard') {
     try {
-      chrome.action.openPopup().catch(() => {});
+      if (typeof chrome.action?.openPopup === 'function') {
+        chrome.action.openPopup().catch(() => {});
+      }
     } catch {
-      // openPopup requires Chrome 99+ or user interaction
+      // openPopup requires Chrome 99+ or user interaction in some browser engines
     }
   }
 });

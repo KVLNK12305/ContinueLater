@@ -2,7 +2,7 @@
   "name": "continue-later",
   "private": true,
   "version": "1.0.0",
-  "description": "A fun Chrome extension to keep track of unfinished learning rabbit holes.",
+  "description": "A cross-browser extension to keep track of unfinished learning rabbit holes across YouTube, Articles, GitHub, and PDFs.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint:addon": "npx addons-linter dist/",
     "package": "npm run build && cd dist && zip -r ../continue-later-extension.zip ."
   },
   "dependencies": {

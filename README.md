@@ -1,8 +1,9 @@
 # ContinueLater 🚀
 
-> A fun Chrome extension I built to explore Manifest V3, track unfinished rabbit holes, and never lose my place when learning online.
+> A cross-browser extension (Chrome & Firefox) built to explore Manifest V3, track unfinished rabbit holes, and never lose your place when learning online.
 
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-brightgreen)](https://developer.chrome.com/docs/extensions/mv3/intro/)
+[![Firefox & Chrome](https://img.shields.io/badge/Browsers-Chrome%20%7C%20Firefox-orange)](https://addons.mozilla.org)
 [![React 18](https://img.shields.io/badge/React-18.2-blue)](https://react.dev/)
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
 [![Vite 5](https://img.shields.io/badge/Vite-5.1-purple)](https://vitejs.dev/)
@@ -77,6 +78,12 @@ pnpm run build
 4. Select the `dist/` directory generated in this repository.
 5. Pin **ContinueLater** to your extensions toolbar!
 
+#### 3. Load into Firefox
+1. Open Firefox and go to `about:debugging#/runtime/this-firefox`.
+2. Click **Load Temporary Add-on...**.
+3. Select the `dist/manifest.json` file.
+4. The add-on is now loaded and available in your Firefox toolbar!
+
 ---
 
 ### 💻 Useful Commands
@@ -88,8 +95,11 @@ pnpm run dev
 # Run Vitest test suite
 pnpm test
 
-# Type check & build
+# Type check & build for Chrome & Firefox
 pnpm run build
+
+# Validate Firefox Add-on with Mozilla addons-linter
+pnpm run lint:addon
 
 # Bundle into a distributable zip
 pnpm run package
